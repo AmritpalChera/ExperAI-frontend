@@ -11,7 +11,7 @@ export default function Hero() {
   const router = useRouter();
   const handleSubmit = () => {
     if (!checkUrl(link)) return toast('Invalid URL')
-    router.push('/');
+    router.push(`/chat?url=${link}`);
   };
 
   return (
