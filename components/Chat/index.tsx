@@ -1,21 +1,39 @@
+"use client";
+
 import Link from "next/link";
 import Header from "../Header";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from "react";
 
 export default function Chat() {
+
+  const searchParams = useSearchParams();
+  const url = searchParams.get('url');
+  const router = useRouter();
+  useEffect(() => {
+    if (!url) router.push('/');
+    
+  }, [])
+
+  console.log('url: ', url);
+
   return (
     <div>
       <Header />
       <div className="flex flex-col items-center  mt-24">
-        <div className="border border-gray-500 rounded-lg max-w-3xl p-24 w-full h-96 shadow-inner shadow-indigo-200">
+        <div className="border border-gray-500 rounded-lg max-w-3xl p-24 sm:p-12 w-full h-96 shadow-inner shadow-indigo-200">
           <div className="text-center">
-            <h1 className="text-8xl font-bold text-primary text-center">Hey!</h1>
+            <h1 className="lg:text-8xl text-3xl font-bold text-primary text-center">Hey!</h1>
             <h2 className="text-3xl mt-6 text-center">How can I help?</h2>
+            <div className="mt-8 text-gray-500 font-bold">
+              Built with Mindplug
+            </div>
           </div>
           
         </div>
         <p className="mt-2 text-gray-500">From: https://google.com?q=heyHowIs</p>
         <div className="mt-8 flex gap-4">
-          <button className="rounded-md text-center bg-black/20 py-4 w-48 px-8 text-base font-semibold text-black duration-300 ease-in-out hover:bg-black/30 dark:bg-white/20 dark:text-white dark:hover:bg-white/30">Add source</button>
+          {/* <button className="rounded-md text-center bg-black/20 py-4 w-48 px-8 text-base font-semibold text-black duration-300 ease-in-out hover:bg-black/30 dark:bg-white/20 dark:text-white dark:hover:bg-white/30">Add source</button> */}
           <Link href={'/'} className="rounded-md text-center bg-black/20 py-4 w-48 px-8 text-base font-semibold text-black duration-300 ease-in-out hover:bg-black/30 dark:bg-white/20 dark:text-white dark:hover:bg-white/30">Create New</Link>
         </div>
         <div className="flex flex-col w-full">
@@ -24,6 +42,7 @@ export default function Chat() {
             <input autoFocus className='bg-white text-black cursor-text mx-2 rounded-3xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray' placeholder="What's your question?..."></input>
         </div>
         </div>
+        
       </div>
     </div>
   )
