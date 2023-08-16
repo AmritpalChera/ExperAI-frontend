@@ -7,7 +7,7 @@ const env = process.env.NODE_ENV;
 
 
 const backend = axios.create({
-    baseURL: env==="development" ? "http://localhost:3000/api" : 'https://webitfast.com/api',
+    baseURL: '/api',
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${key}`,
