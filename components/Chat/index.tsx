@@ -73,7 +73,7 @@ export default function Chat() {
           {
             response && (
               <div className="h-full flex-1 flex flex-col">
-                <div className="text-center flex-1 h-full overflow-y-scroll">
+                <div className="text-start flex-1 h-full overflow-y-scroll whitespace-pre-wrap">
                   {response}
                 </div>
                 <div className="flex flex-wrap md:gap-4 whitespace-nowrap">
