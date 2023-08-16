@@ -26,8 +26,8 @@ export default function Hero() {
   return (
     <div className="flex w-full flex-col justify-center items-center">
       <ToastContainer />
-      <h1 className="text-9xl font-bold text-primary mt-32">Web it Fast</h1>
-      <h2 className="text-3xl mt-6">Enter any URL</h2>
+      <h1 className="md:text-9xl text-4xl font-bold text-primary mt-32">Web it Fast</h1>
+      <h2 className="md:text-3xl text-2xl mt-6">Enter any URL</h2>
       <div className=' w-full flex justify-center mx-2 mt-12'>
             
           <input onKeyDown={handleKeyDown} value={link} onChange={(e) => setLink(e.target.value)} autoFocus className='bg-white text-black cursor-text mx-2 rounded-3xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray' placeholder={`https//medium.com/...`}></input>
