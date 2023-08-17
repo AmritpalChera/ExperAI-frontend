@@ -45,17 +45,17 @@ export default function MessageWindow() {
           Expert of the day: Mr.Brown
         </div>
         {
-          chatdata.map((message: any) => {
+          chatdata.map((message: any, index: number) => {
             if (message.role === 'user') {
               return (
-                <div className='flex justify-end'>
+                <div key={index} className='flex justify-end'>
                   <h3 className='w-fit px-6 py-3 shadow-md rounded-t-2xl !rounded-l-2xl bg-primary max-w-xs lg:max-w-3xl text-white text-[16px]'>
                     {message.content}
                   </h3>
                 </div>
               )
             } else return (
-              <div>
+              <div key={index}>
                 <h3
                   className='px-6 py-3 shadow shadow-slate-500 text-[16px] bg-black/20 rounded-t-2xl !rounded-r-2xl w-fit leading-6 whitespace-pre-wrap'
                 >

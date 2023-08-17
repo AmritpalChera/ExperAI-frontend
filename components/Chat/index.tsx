@@ -34,7 +34,7 @@ export default function Chat() {
               <h1 className='text-primary text-center font-bold'>Meet Mr.Brown</h1>
               <img src='https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1752&q=80'/>
               <h2 className='text-center'>Superman of Harold M. Brathwaite Public School</h2>
-              <p>Mr.Brown has helped countless students overcome their fears in math. He helped them excel at different algebra topics and calculus through his innovative methods. He's an inspiration to the young generation.</p>
+              <p>Mr.Brown has helped countless students overcome their fears in math. He helped them excel at different algebra topics and calculus through his innovative methods. He&#39;s an inspiration to the young generation.</p>
             </div>
             <div className='flex flex-col gap-4'>
               <button className='py-4 px-6 bg-dark rounded-lg text-white hover:bg-dark/80'>Add to Collection</button>
