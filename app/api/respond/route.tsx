@@ -10,25 +10,11 @@ const mindplug = new Mindplug({ mindplugKey: process.env.MINDPLUG_KEY! });
 
 
 export async function POST(req: Request) {
-  let { urlHash, search } = await req.json();
-  console.log('urlHash is: ', urlHash)
+  let { search, chatHistory } = await req.json();
   try {
-    const storedUrl = await supabase.from('webVectors').select('uploadId').eq('urlHash', urlHash).single();
-    if (storedUrl.error) console.log(storedUrl.error)
-    const storedUploadId = storedUrl?.data?.uploadId;
-    let context;
-    console.log('stored upload id is: ', storedUploadId)
-    if (storedUploadId) {
-      
-      context = await mindplug.query({ metadataFilters: { "genre" : { "$eq": storedUploadId}} , db: 'webpages', collection: 'initial', search, count: 1 });
-    }
-    context = context?.data && context?.data[0];
-    let answer: any;
-    if (context) {
-      answer = await callChatGpt({ search, context: context?.metadata?.content });
-    }
+    let answer = await callChatGpt({ search, chatHistory });
     if (!answer) answer = "Could not find relavent text, please search again"
-    return NextResponse.json({answer: answer, confidence: context?.score});
+    return NextResponse.json({answer: answer});
   } catch (e) {
     console.log('error searching content: ', e);
     return NextResponse.json({ error: 'Could not search content' }, { status: 500 });

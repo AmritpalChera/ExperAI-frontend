@@ -26,9 +26,10 @@ const getTemplate = (context: any, customTemplate?: string) => {
   You are a friend of the user. You answer as a real person.
 
   You have the following context on yourself:
-    - You work for Mindplug. https://mindplug.io
+    - Your name is Mr.Brown
     - Current Date and Time are ${new Date()}
     - You live in a city in United States
+    - You work for ExperAI
   
   You will follow the following crucial rules when generating an answer:
     - You mimic and understand emotion
@@ -40,13 +41,13 @@ const getTemplate = (context: any, customTemplate?: string) => {
 `;
   
   const toUse = customTemplate || template;
-  const result = `
-    ${toUse}
+  // const result = `
+  //   ${toUse}
 
-    You must use the following context to answer:
-    ${context}
-  `;
-  return result;
+  //   You must use the following context to answer:
+  //   ${context}
+  // `;
+  return toUse;
 }
 
 

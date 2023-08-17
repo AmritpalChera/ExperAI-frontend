@@ -1,107 +1,49 @@
 "use client";
+import { toast } from 'react-toastify';
+import Sidenav from '../Sidenav';
+import MessageWindow from './MessageWindow';
+import backend from '@/utils/app/axios';
+import { useState } from 'react';
 
-import Link from "next/link";
-import Header from "../Header";
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from "react";
-import backend from "@/utils/app/axios";
-import { ToastContainer, toast } from "react-toastify";
 
 export default function Chat() {
-
-  const searchParams = useSearchParams();
-  const url = searchParams.get('url');
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [response, setResponse] = useState('');
-  const [urlHash, setUrlHash] = useState('');
-  const [coverage, setCoverage] = useState('-');
-  const [input, setInput] = useState('');
-
-  const respond = async () => {
-    if (!input) return toast.error('Please enter input');
-    setLoading(true)
-    const data = await backend.post('/respond', { urlHash, search: input }).then(res => res.data).catch(err => {
-      console.log('err', err);
-      toast.error('Something went wrong');
-    });
-    if (data) {
-      setResponse(data.answer);
-      setCoverage(`${Math.round(data.confidence*100)}%`)
-    }
-    setLoading(false);
-  }
-
-  const loadUrl = async () => {
-
-    const data = await backend.post('/load', { url }).then(res => res.data).catch(err => {
-      console.log('err: ', err);
-      toast.error('Could not load webpage');
-    });
-    setLoading(false);
-    if (data) {
-      setUrlHash(data.urlHash)
-    }
-  }
-
-  useEffect(() => {
-    if (!url) router.push('/');
-    loadUrl();
-  }, [])
-
-  console.log('url: ', url);
-
-  const handleKeyDown = (event: any) => {
-    if (event.key === 'Enter') {
-      respond();
-    }
-  }
-
   return (
-    <div>
-      <ToastContainer />
-      <Header />
-      <div className="flex flex-col items-center  mt-24">
-        <div className="border border-gray-500 flex flex-col rounded-lg max-w-3xl md:p-12 p-4 w-full h-96 shadow-inner shadow-indigo-200">
-          {loading && <div className="text-3xl text-primary">Reading url<span className="animate-ping">...</span></div>}
-          {!response && !loading && <div className="text-center flex-1">
-            <h2 className="text-3xl mt-6 text-center">How can I help?</h2>
-            <div className="mt-8 text-gray-500 font-bold">
-              Built with Mindplug
+    <>
+      {/*
+        This example requires updating your template:
+
+        ```
+        <html class="h-full bg-white">
+        <body class="h-full">
+        ```
+      */}
+      <div>
+        <Sidenav />
+
+        <main className="lg:pl-72">
+          <div className="xl:pr-96">
+            <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6 flex justify-center h-screen">
+              <MessageWindow />
             </div>
-          </div>}
-          {
-            response && (
-              <div className="h-full flex-1 flex flex-col">
-                <div className="text-start flex-1 h-full overflow-y-scroll whitespace-pre-wrap">
-                  {response}
-                </div>
-                <div className="flex flex-wrap md:gap-4 whitespace-nowrap">
-                  <p className="mt-2 text-gray-500 w-72 overflow-clip text-ellipsis"><span className="font-medium">From:</span> {url}</p>
-                  <p className="mt-2 text-gray-500"><span className="font-medium">Confidence:</span> {coverage}</p>
-                </div>
-              </div>
-            )
-          }
-          
-          
-        </div>
-        
-        
-        <div className="flex flex-col w-full">
-          <div className=' w-full flex justify-center mx-2 mt-12'>
-            <input onKeyDown={handleKeyDown} value={input} onChange={(e) => setInput(e.target.value)} autoFocus className='bg-white text-black cursor-text mx-2 rounded-3xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray' placeholder="What's your question?..."></input>
           </div>
-        </div>
-        <div>
-          <button onClick={respond} disabled={loading} className="rounded-md text-center bg-primary py-4 w-48 px-8 text-base font-semibold mt-12 duration-300 ease-in-out hover:bg-primary/80 text-white">Ask</button>
+        </main>
 
-          <div className="mt-8 flex gap-4 justify-center underline">
-            <Link href={'/'} className="text-gray-500 text-lg text-center">Create New</Link>
+        <aside className="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block">
+          <div className='flex flex-col h-full gap-4 text-gray-500'>
+            <div className='flex flex-col gap-4 flex-1'>
+              <h1 className='text-primary text-center font-bold'>Meet Mr.Brown</h1>
+              <img src='https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1752&q=80'/>
+              <h2 className='text-center'>Superman of Harold M. Brathwaite Public School</h2>
+              <p>Mr.Brown has helped countless students overcome their fears in math. He helped them excel at different algebra topics and calculus through his innovative methods. He's an inspiration to the young generation.</p>
+            </div>
+            <div className='flex flex-col gap-4'>
+              <button className='py-4 px-6 bg-dark rounded-lg text-white hover:bg-dark/80'>Add to Collection</button>
+              <button className='py-4 px-6 bg-white border border-3 shadow-md rounded-lg text-black hover:bg-black/5'>Share</button>
+            </div>
+            
           </div>
-        </div>
-
+        </aside>
       </div>
-    </div>
+    </>
   )
 }
