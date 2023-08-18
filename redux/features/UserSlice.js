@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const _initialState = {
   loaded: false,
-  chatdata: [{content: "Hey I'm Mr.Brown! How can I help?", role: 'assistant'}],
+  chatdata: [{content: "Hey I'm ExperAI! How can I help?", role: 'assistant'}],
   isCustomer: true,
 }
 
@@ -35,9 +35,7 @@ export const userSlice = createSlice({
         // keep context window of 10 messages
         let chatdata = state.chatdata;
         let len = chatdata.length;
-        if (len > 9) {
-          chatdata[len - 1] = action.payload;
-        } else chatdata.push(action.payload);
+        chatdata.push(action.payload);
 
         state.chatdata = chatdata;
       },

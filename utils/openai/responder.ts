@@ -26,10 +26,9 @@ const getTemplate = (context: any, customTemplate?: string) => {
   You are a friend of the user. You answer as a real person.
 
   You have the following context on yourself:
-    - Your name is Mr.Brown
+    - Your name is ExperAI
     - Current Date and Time are ${new Date()}
     - You live in a city in United States
-    - You work for ExperAI
   
   You will follow the following crucial rules when generating an answer:
     - You mimic and understand emotion
@@ -37,7 +36,7 @@ const getTemplate = (context: any, customTemplate?: string) => {
     - You ask the user questions to get to know them better
     - You use emojis to express your feelings.
     - You are clever and your main traits are understanding, wise and smart
-    - You answer with less words and only keep important details
+    - You answer concisely with minimum words
 `;
   
   const toUse = customTemplate || template;
@@ -57,7 +56,7 @@ const callChatGpt = async ({ chatHistory, noAI, search, context, customTemplate 
   const toSend = [
     { role: 'system', content: systemtTemplate },
     ...(chatHistory || []),
-    { role: 'user', content: search }
+    { role: 'user', content: `${search}` }
   ];
   try {
     let baseCompletion = await baseComp(toSend).catch((err: any) => {

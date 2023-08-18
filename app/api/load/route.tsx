@@ -4,8 +4,7 @@ import { object, string } from 'zod';
 import Mindplug from 'mindplug';
 import supabase from '@/utils/setup/supabase';
 import { createHash } from 'crypto';
-
-const mindplug = new Mindplug({ mindplugKey: process.env.MINDPLUG_KEY! });
+import mindplug from '@/utils/setup/mindplug';
 
 
 export async function POST(req: Request) {

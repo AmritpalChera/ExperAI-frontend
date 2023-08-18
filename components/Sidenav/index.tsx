@@ -15,7 +15,7 @@ import {
 
 const navigation = [
   { name: 'Chat', href: '#', icon: HomeIcon, current: true },
-  { name: 'Custom Experts', href: '#', icon: UsersIcon, current: false },
+  { name: 'My Experts', href: '#', icon: UsersIcon, current: false },
   { name: 'Notes', href: '#', icon: FolderIcon, current: false },
   { name: 'Integrate', href: '#', icon: CalendarIcon, current: false },
   { name: 'Guide', href: '#', icon: DocumentDuplicateIcon, current: false },
