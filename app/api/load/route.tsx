@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server'
 import { object, string } from 'zod';
 import Mindplug from 'mindplug';
-import supabase from '@/utils/setup/supabase';
+import supabase from '@/utils/setup/supabaseInternal';
 import { createHash } from 'crypto';
 import mindplug from '@/utils/setup/mindplug';
 

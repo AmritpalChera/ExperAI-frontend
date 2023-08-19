@@ -53,7 +53,7 @@ export default function MessageWindow() {
     <div ref={windowRef} className='max-w-3xl w-full py-6 flex flex-col gap-4 lg:h-[calc(100vh-2rem)] h-[calc(100vh-4rem)] overflow-y-hidden'>
       <div className="flex justify-between">
         <h1 className="text-primary font-bold">ExperAI</h1>
-        {chatdata.length > 5 && <button className="bg-black/10 animate-pulse px-4 py-1 rounded-lg text-primary">Save Chat</button>}
+        {chatdata.length > 5 && <button className="bg-red animate-pulse px-4 py-1 rounded-lg text-white">Save Chat</button>}
       </div>
         <div className='flex-1 flex flex-col gap-4 h-full overflow-y-scroll noScrollbar'>
           
