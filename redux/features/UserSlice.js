@@ -6,6 +6,8 @@ const _initialState = {
   loaded: false,
   chatdata: [{content: "Hey I'm ExperAI! How can I help?", role: 'assistant'}],
   isCustomer: true,
+  siginOpen: false,
+  npcId: '46d9456d-c2ea-41ed-b436-8afb7131f90b',
 }
 
 export const userSlice = createSlice({

@@ -1,5 +1,6 @@
 import { selectUser } from "@/redux/features/UserSlice";
 import mindplug from "@/utils/setup/mindplug";
+import supabase from "@/utils/setup/supabase";
 import { ArrowLeftOnRectangleIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import { createHash } from "crypto";
 import { useState } from "react";
@@ -24,9 +25,14 @@ export default function UploadPdf({ setUploadType }: any) {
 
     try {
       // await backend.post('/data/store/file', data);
-      const urlHash = createHash('sha256').update(`${user.id}-${user.activeChat?.npcId}`).digest('hex');
-      await mindplug.storePDF({file: file, db: 'experAi-contexts', collection: urlHash})
+      const urlHash = createHash('sha256').update(`${user.id}-${user.npcId}`).digest('hex');
+      const data = await mindplug.storePDF({ file: file, db: 'experAi-contexts', collection: urlHash });
+      const uploadId = data?.data?.uploadId;
+      if (!uploadId) throw "Could not store file contents";
+      await supabase.from('exp-contexts').upsert({ npcId: user.npcId, userId: user.id, uploadId: uploadId, name: file.name, type: file.type })
+
       toast('Complete!');
+      setUploadType(false);
       
       e.target.reset();
     } catch (e: any) {
@@ -34,7 +40,7 @@ export default function UploadPdf({ setUploadType }: any) {
       if (typeof (e?.response?.data?.error) === 'string') setError(e?.response?.data?.error);
       toast.error('Process failed. Try again')
     }
-    
+    setLoading(false);
   }
 
 

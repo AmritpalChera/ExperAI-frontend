@@ -40,13 +40,13 @@ const getTemplate = (context: any, customTemplate?: string) => {
 `;
   
   const toUse = customTemplate || template;
-  // const result = `
-  //   ${toUse}
+  const result = `
+    ${toUse}
 
-  //   You must use the following context to answer:
-  //   ${context}
-  // `;
-  return toUse;
+    Use the following context to answer:
+     - ${context}
+  `;
+  return result;
 }
 
 

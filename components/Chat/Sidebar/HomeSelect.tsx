@@ -1,8 +1,9 @@
 import { selectUser, setUserData } from '@/redux/features/UserSlice';
+import supabase from '@/utils/setup/supabase';
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
-import { Bars3Icon, CalendarIcon, DocumentTextIcon, SpeakerWaveIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, CalendarIcon, DocumentTextIcon, ShieldExclamationIcon, SpeakerWaveIcon, TrashIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const items = [
@@ -27,13 +28,57 @@ function classNames(...classes: any) {
 }
 
 
-export default function HomeSelect({ setUploadType }: any) {
+export default function HomeSelect({ setUploadType, uploadType }: any) {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const handlePreselect = (itemId: string) => {
     if (!user.id) dispatch(setUserData({ signinOpen: true }));
     else setUploadType(itemId)
   };
+  const [uploadedTypes, setUploadedTypes] = useState<any>([
+    {
+    name: 'Report.PDF',
+    description: 'application/pdf',
+    id: 'pdf',
+    iconColor: 'bg-purple-500',
+    icon: DocumentTextIcon,
+    },
+    {
+      name: 'Report.PDF',
+      description: 'application/pdf',
+      id: 'pdf',
+      iconColor: 'bg-purple-500',
+      icon: DocumentTextIcon,
+    },
+    {
+      name: 'Report.PDF',
+      description: 'application/pdf',
+      id: 'pdf',
+      iconColor: 'bg-purple-500',
+      icon: DocumentTextIcon,
+    }
+  ]);
+
+  const getPreviousUploads = async () => {
+    const prevUploadData = await supabase.from('exp-contexts').select('name, type').eq('npcId', user.npcId).eq('userId', user.id);
+    if (prevUploadData.error) return console.log('Could not get previous context');
+    let documents = prevUploadData.data;
+    documents = documents.map(doc => {
+      return {
+        name: doc.name,
+        type: doc.type,
+        id: doc.type === 'application/pdf' ? 'pdf' : 'audio',
+        iconColor: doc.type === 'application/pdf' ? 'bg-purple-500' : 'bg-green-500',
+        icon: doc.type === 'application/pdf' ? DocumentTextIcon : SpeakerWaveIcon
+      }
+    });
+
+    setUploadedTypes(documents);
+  }
+
+  useEffect(() => {
+    getPreviousUploads();
+  }, [uploadType]);
 
   return (
     <div>
@@ -72,6 +117,33 @@ export default function HomeSelect({ setUploadType }: any) {
         </Link>
       </div>
       <h1 className="text-gray-500 border-b mt-12">Previously Uploaded</h1>
+      <ul role="list" className="mt-6 border-gray-200">
+        {uploadedTypes.map((item: any, itemIdx: any) => (
+          <li key={itemIdx}>
+            <div className="group relative flex items-start space-x-3 py-4">
+              <div className="flex-shrink-0">
+                <span
+                  className={classNames(item.iconColor, 'inline-flex h-10 w-10 items-center justify-center rounded-lg')}
+                >
+                  <item.icon className="h-6 w-6 text-white" aria-hidden="true" />
+                </span>
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-medium">
+                  <div onClick={() => handlePreselect(item.id)}>
+                    <span className="absolute inset-0 cursor-pointer" aria-hidden="true" />
+                    {item.name}
+                  </div>
+                </div>
+                <p className="text-sm text-gray-500">{item.type}</p>
+              </div>
+              <div className="flex-shrink-0 self-center">
+                <TrashIcon className="h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

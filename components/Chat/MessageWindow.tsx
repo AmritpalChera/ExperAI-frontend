@@ -7,7 +7,7 @@ import { addMessage, selectUser, setUserData } from "@/redux/features/UserSlice"
 
 export default function MessageWindow() {
   
-  
+  const user = useSelector(selectUser);
   const [loading, setLoading] = useState(true);
   const [response, setResponse] = useState('');
   const [input, setInput] = useState('');
@@ -22,7 +22,7 @@ export default function MessageWindow() {
     setLoading(true);
     setInput('');
     dispatch(addMessage({ content: input, role: 'user' }));
-    const data = await backend.post('/respond', { search: input, chatHistory: chatdata.slice(0, 10) }).then(res => res.data).catch(err => {
+    const data = await backend.post('/respond', { search: input, chatHistory: chatdata.slice(0, 5), npcId: user.npcId, userId: user.id }).then(res => res.data).catch(err => {
       console.log('err', err);
       toast.error('Something went wrong');
     });

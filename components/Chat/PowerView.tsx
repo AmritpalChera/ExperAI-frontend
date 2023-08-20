@@ -18,7 +18,7 @@ export type WebResults = {
 
 
 export default function PowerView() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false);
 
   const user = useSelector(selectUser);
   const resultCard = (result: WebResults) => {

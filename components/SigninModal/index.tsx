@@ -15,7 +15,6 @@ export default function SigninModal() {
   }
 
   useEffect(() => {
-    console.log('signinOpen: ', user.signinOpen)
     if (user.signinOpen) {
       setOpen(true);
     } else {

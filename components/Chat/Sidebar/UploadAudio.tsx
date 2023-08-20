@@ -2,8 +2,11 @@
 
 import { selectUser } from "@/redux/features/UserSlice";
 import backend from "@/utils/app/axios";
+import mindplug from "@/utils/setup/mindplug";
 import initializeOpenai from "@/utils/setup/openai";
+import supabase from "@/utils/setup/supabase";
 import { ArrowLeftOnRectangleIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import { createHash } from "crypto";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -36,16 +39,24 @@ export default function UploadAudio({ setUploadType }: any) {
     
     if (!file) return toast.error('File not uploaded');
     if (file.size > 20000000) throw toast.error('File limit is 20MB');
-    let content: string = '';
 
-    console.log(file);
-    return;
+    try {
+      // await backend.post('/data/store/file', data);
+      const urlHash = createHash('sha256').update(`${user.id}-${user.npcId}`).digest('hex');
+      const data = await mindplug.storeAudio({ file, db: 'experAi-contexts', collection: urlHash});
+      const uploadId = data?.data?.uploadId;
+      if (!uploadId) throw "Could not store file contents";
+      await supabase.from('exp-contexts').upsert({ npcId: user.npcId, userId: user.id, uploadId: uploadId, name: file.name, type: file.type })
 
-    const response = await openai.createTranscription(file!, 'whisper-1', undefined, 'json', 1, 'en');
-    content = response.data?.text;
-
-    if (!content) return toast.error('Could not transcribe audio');
-
+      toast('Complete!');
+      setUploadType(false);
+      
+      e.target.reset();
+    } catch (e: any) {
+      console.log(e)
+      // if (typeof (e?.response?.data?.error) === 'string') setError(e?.response?.data?.error);
+      toast.error('Process failed. Try again')
+    }
     setLoading(false);
   };
 

@@ -55,7 +55,7 @@ export default function SidebarContext() {
     else if (uploadType === 'pdf') return <UploadPdf setUploadType={setUploadType} />
     else if (uploadType === 'text') return <UploadText setUploadType={setUploadType} />
     else if (uploadType === 'audio') return <UploadAudio setUploadType={setUploadType} />
-    else return <HomeSelect setUploadType={setUploadType} />
+    else return <HomeSelect setUploadType={setUploadType} uploadType={uploadType} />
   }
 
   return (
