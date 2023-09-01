@@ -7,6 +7,8 @@ import { Provider } from "react-redux";
 import store from "@/redux/store";
 import mixpanel from 'mixpanel-browser';
 import Startup from "./startup";
+import { Analytics } from '@vercel/analytics/react';
+
 
 // Replace YOUR_TOKEN with your Project Token
 mixpanel.init('7d2f3e7ad39ee2f24f6465d2f9bf23f3', {debug: true, ignore_dnt: true}); 
@@ -18,6 +20,7 @@ export function Providers({ children }: ProviderProps) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
   return (
     <SessionContextProvider supabaseClient={supabaseClient}>
+      <Analytics />
       <Provider store={store}>
         <Startup>
           {children}

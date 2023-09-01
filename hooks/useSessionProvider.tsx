@@ -1,6 +1,7 @@
 import { selectUser, setUserData } from "@/redux/features/UserSlice";
 import backend from "@/utils/app/axios";
 import supabase from "@/utils/setup/supabase";
+import mixpanel from "mixpanel-browser";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,7 @@ export default function useSessionProvider() {
     dispatch(setUserData({ ...user, loaded: true }));
 
     if (user?.id) {
+      mixpanel.identify(user.id);
       const customerData = await supabase.from('customers').select('plan').eq('userId', user.id).single();
       dispatch(setUserData({ planType: customerData?.data?.plan || 'lite' }))
     }

@@ -1,12 +1,6 @@
 import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import {
-  ArrowPathIcon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
   StarIcon,
 } from '@heroicons/react/24/outline'
 
