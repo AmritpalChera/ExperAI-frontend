@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className='h-screen w-full flex justify-center'>
       <main className=" container">
-        <Header />
+        {/* <Header /> */}
         <Hero />
       </main>
     </div>

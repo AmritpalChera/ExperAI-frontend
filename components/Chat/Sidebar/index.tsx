@@ -1,11 +1,16 @@
+"use client";
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import SidebarContext from './SidebarContent'
+import { useSelector } from 'react-redux'
+import { selectUser } from '@/redux/features/UserSlice'
 
-export default function Sidebar({open, setOpen}: any) {
+export default function Sidebar({ setOpen }: any) {
+  const user = useSelector(selectUser);
+
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={!!user.contextUploadOpen} as={Fragment}>
       <Dialog as="div" className="relative z-20" onClose={setOpen}>
         <div className="fixed inset-0" />
 

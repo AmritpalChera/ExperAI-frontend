@@ -1,6 +1,7 @@
 "use client";
 
-import { selectUser } from "@/redux/features/UserSlice";
+import { selectUser, setUserData } from "@/redux/features/UserSlice";
+import { CustomerPlans } from "@/utils/app";
 import backend from "@/utils/app/axios";
 import mindplug from "@/utils/setup/mindplug";
 import initializeOpenai from "@/utils/setup/openai";
@@ -11,42 +12,42 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-export default function UploadAudio({ setUploadType }: any) {
+export default function UploadAudio({ setUploadType, limitHandler }: any) {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const params = useSearchParams();
-  const [project, setProject] = useState(params.get('project') || '');
-  const [collection, setCollection] = useState(params.get('collection') || '');
-  const router = useRouter();
+
   const user = useSelector(selectUser);
-  const [openai] = useState(initializeOpenai());
+  const dispatch = useDispatch();
 
   const onChangeHandler = async (event: any) => {
     const file: File = event.target.files[0];
-    console.log('file uploaded is: ', file)
     setFile(file);
   };
+
+  
   
   const handleSubmit = async (e: any) => {
     if (loading) return;
-    setLoading(true);
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const formProps: any = Object.fromEntries(formData);
     
+    e.preventDefault();
     if (!file) return toast.error('File not uploaded');
-    if (file.size > 20000000) throw toast.error('File limit is 20MB');
 
     try {
+      await limitHandler();
+    } catch (e: any) {
+      return;
+    }
+    setLoading(true);
+    try {
       // await backend.post('/data/store/file', data);
-      const urlHash = createHash('sha256').update(`${user.id}-${user.npcId}`).digest('hex');
-      const data = await mindplug.storeAudio({ file, db: 'experAi-contexts', collection: urlHash});
+      const urlHash = createHash('sha256').update(`${user.id}-${user.npcDetails.npcId}`).digest('hex');
+      const data = await mindplug.storeAudio({ file, db: 'experAi-contexts', collection: urlHash, metadata: { fileName: file.name }});
       const uploadId = data?.data?.uploadId;
       if (!uploadId) throw "Could not store file contents";
-      await supabase.from('exp-contexts').upsert({ npcId: user.npcId, userId: user.id, uploadId: uploadId, name: file.name, type: file.type })
+      await supabase.from('exp-contexts').upsert({ npcId: user.npcDetails.npcId, userId: user.id, uploadId: uploadId, name: file.name, type: file.type })
 
       toast('Complete!');
       setUploadType(false);

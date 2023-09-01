@@ -7,7 +7,7 @@ const env = process.env.NODE_ENV;
 
 
 const backend = axios.create({
-    baseURL: '/api',
+    baseURL: env==="development" ? "http://localhost:3001/api" : 'https://backend.experai.com/api',
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${key}`,

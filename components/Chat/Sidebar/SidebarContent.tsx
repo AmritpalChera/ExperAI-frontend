@@ -9,6 +9,9 @@ import UploadPdf from './UploadPdf';
 import UploadWeb from './UploadWeb';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, setUserData } from '@/redux/features/UserSlice';
+import { CustomerPlans } from '@/utils/app';
+import supabase from '@/utils/setup/supabase';
+import { toast } from 'react-toastify';
 
 const items = [
   {
@@ -48,13 +51,45 @@ function classNames(...classes: any) {
 export default function SidebarContext() {
   const user = useSelector(selectUser);
   const [uploadType, setUploadType] = useState('');
-  console.log('upload type is: ', uploadType)
+  const dispatch = useDispatch();
+
+  const limitHandler = async (fileSize: number) => {
+    let limit = 20000000; // 20 MB
+    if (user.planType === CustomerPlans.LITE) {
+      // allow 2 total file uploads across all experts
+      limit = 5000000;
+      const totalFilesData = await supabase.from('exp-contexts').select().eq('userId', user.id);
+      const totalFiles = totalFilesData.data?.length || 0;
+      if (totalFiles >= 2) {
+        dispatch(setUserData({ upgradeModal: {open: true, message: 'Please upgrade to upload more files.'} }));
+        throw toast.error('Already uploaded 2 files. Limit reached')
+      }
+      
+      if (fileSize > limit) {
+        dispatch(setUserData({ upgradeModal: {open: true, message: 'Please upgrade to increae limit to 20 MB.'} }));
+        throw toast.error('File limit is 5 MB. Please upgrade');
+      }
+    } else if (user.planType === CustomerPlans.BASIC) {
+      // allow up to 5 uploads per expert
+      const recentGroup = user.activeGroup || (user.groups && user?.groups[0]?.groupId);
+
+      const totalFilesData = await supabase.from('exp-contexts').select().eq('userId', user.id).eq('npcId', recentGroup?.npcId?.npcId);
+      const totalFiles = totalFilesData.data?.length || 0;
+      if (totalFiles >= 5) {
+        throw toast.error('File limit reached for current expert')
+      }
+      
+      if (fileSize > limit) {
+        throw toast.error('Size limit is 20 MB.');
+      }
+    }
+  }
 
   const getRender = () => {
-    if (uploadType === 'webpage') return <UploadWeb setUploadType={setUploadType} />
-    else if (uploadType === 'pdf') return <UploadPdf setUploadType={setUploadType} />
-    else if (uploadType === 'text') return <UploadText setUploadType={setUploadType} />
-    else if (uploadType === 'audio') return <UploadAudio setUploadType={setUploadType} />
+    if (uploadType === 'webpage') return <UploadWeb setUploadType={setUploadType} limitHandler={limitHandler} />
+    else if (uploadType === 'pdf') return <UploadPdf setUploadType={setUploadType} limitHandler={limitHandler} />
+    else if (uploadType === 'text') return <UploadText setUploadType={setUploadType} limitHandler={limitHandler} />
+    else if (uploadType === 'audio') return <UploadAudio setUploadType={setUploadType} limitHandler={limitHandler} />
     else return <HomeSelect setUploadType={setUploadType} uploadType={uploadType} />
   }
 

@@ -4,10 +4,13 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const _initialState = {
   loaded: false,
-  chatdata: [{content: "Hey I'm ExperAI! How can I help?", role: 'assistant'}],
-  isCustomer: true,
+  chatdata: [{content: "1 second, calling expert...", role: 'assistant'}],
   siginOpen: false,
   npcId: '46d9456d-c2ea-41ed-b436-8afb7131f90b',
+  upgradeModal: {
+    open: false,
+    message: ''
+  }
 }
 
 export const userSlice = createSlice({
@@ -21,9 +24,9 @@ export const userSlice = createSlice({
           })    
       },
       logout: (state) => {
-        const keys = Object.keys(state);
-        keys.forEach((key) => state[key] = '')
-        state.loaded = true;
+        // const keys = Object.keys(state);
+        // keys.forEach((key) => state[key] = '')
+        state = _initialState;
       },
       addConversation: (state, action) => {
         const { conversation } = action.payload;

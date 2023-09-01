@@ -15,12 +15,12 @@ export default function SigninModal() {
   }
 
   useEffect(() => {
-    if (user.signinOpen) {
+    if (user.signinOpen && !user.id) {
       setOpen(true);
     } else {
       setOpen(false);
     }
-  }, [user]);
+  }, [user.signinOpen, user.id]);
 
   async function signInWithGoogle() {
     await supabase.auth.signInWithOAuth({
@@ -30,7 +30,7 @@ export default function SigninModal() {
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-30" onClose={closeModal}>
+      <Dialog as="div" className="relative z-30" onClose={() => { }}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

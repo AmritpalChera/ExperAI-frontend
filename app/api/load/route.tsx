@@ -32,15 +32,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Could not store content' }, { status: 500 });
   }  
 }
-
-
-// export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-//   if (req.method === 'POST') {
-//     // upload url embeddings
-//     const data = await mindplug.storeWeb({ url: req.body.url, db: 'webpages', collection: 'initial' });
-//     console.log('data is: ', data);
-//     res.json(data)
-//   } else {
-//     res.status(400).json({ error: 'Invalid request' });
-//   }
-// }

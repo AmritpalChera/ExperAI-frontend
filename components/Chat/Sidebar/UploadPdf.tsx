@@ -8,7 +8,7 @@ import { ThreeDots } from "react-loader-spinner";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-export default function UploadPdf({ setUploadType }: any) {
+export default function UploadPdf({ setUploadType, limitHandler }: any) {
   const user = useSelector(selectUser);
 
   const [file, setFile] = useState<File | null>(null);
@@ -19,17 +19,21 @@ export default function UploadPdf({ setUploadType }: any) {
     e.preventDefault();
     if (loading) return;
     if (!file) return toast.error('Please upload file');
-    if (file.size > 20000000) toast.error('File limit is 20MB');
+   
+    try {
+      await limitHandler();
+    } catch (e: any) {
+      return;
+    }
 
     setLoading(true);
-
     try {
       // await backend.post('/data/store/file', data);
-      const urlHash = createHash('sha256').update(`${user.id}-${user.npcId}`).digest('hex');
+      const urlHash = createHash('sha256').update(`${user.id}-${user.npcDetails.npcId}`).digest('hex');
       const data = await mindplug.storePDF({ file: file, db: 'experAi-contexts', collection: urlHash });
       const uploadId = data?.data?.uploadId;
       if (!uploadId) throw "Could not store file contents";
-      await supabase.from('exp-contexts').upsert({ npcId: user.npcId, userId: user.id, uploadId: uploadId, name: file.name, type: file.type })
+      await supabase.from('exp-contexts').upsert({ npcId: user.npcDetails.npcId, userId: user.id, uploadId: uploadId, name: file.name, type: file.type })
 
       toast('Complete!');
       setUploadType(false);
@@ -47,7 +51,6 @@ export default function UploadPdf({ setUploadType }: any) {
 
   const onChangeHandler = async (event: any) => {
     const file: File = event.target.files[0];
-    console.log('file uploaded is: ', file)
     setFile(file);
   };
   const getDropboxContents = () => {

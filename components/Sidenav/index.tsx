@@ -12,27 +12,36 @@ import {
   UsersIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/redux/features/UserSlice';
 
-const navigation = [
-  { name: 'Chat', href: '#', icon: HomeIcon, current: true },
-  { name: 'My Experts', href: '#', icon: UsersIcon, current: false },
-  { name: 'Notes', href: '#', icon: FolderIcon, current: false },
-  { name: 'Integrate', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Guide', href: '#', icon: DocumentDuplicateIcon, current: false },
-  { name: 'Profile', href: '#', icon: ChartPieIcon, current: false },
-]
-const teams = [
-  { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
-  { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-  { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
-]
+
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Sidenav() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
+  const user = useSelector(selectUser);
+  const navigation = [
+    { name: 'Chat', href: '/chat', icon: HomeIcon, current: pathname === '/chat' },
+    { name: 'My Experts', href: '/experts', icon: UsersIcon, current: pathname === '/experts' },
+    // { name: 'Notes', href: '#', icon: FolderIcon, current: false },
+    // { name: 'Integrate', href: '#', icon: CalendarIcon, current: false },
+    // { name: 'Guide', href: '#', icon: DocumentDuplicateIcon, current: false },
+    // { name: 'Profile', href: '#', icon: ChartPieIcon, current: false },
+    { name: 'Pricing', href: '/pricing', icon: ChartPieIcon, current: pathname === '/pricing' },
+  ]
+  const teams = [
+    { id: 1, name: 'Discord', href: 'https://discord.gg/vbHJY96sCT', initial: 'D', current: false },
+    { id: 2, name: 'Twitter', href: 'https://twitter.com/exper_labs', initial: 'T', current: false },
+    { id: 3, name: 'Feedback Form', href: 'https://forms.gle/4ipCauU8XNMQ3qzy7', initial: 'C', current: false },
+  ]
+
   return (
     <>
     <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -78,20 +87,20 @@ export default function Sidenav() {
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
-                    <div className="flex h-16 shrink-0 items-center">
+                    <Link href='/' className="flex h-16 shrink-0 items-center">
                       <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                        alt="Your Company"
+                        className="h-12 w-auto"
+                        src="/logo.png"
+                        alt="ExperAI"
                       />
-                    </div>
+                    </Link>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
                         <li>
                           <ul role="list" className="-mx-2 space-y-1">
                             {navigation.map((item) => (
                               <li key={item.name}>
-                                <a
+                                <Link
                                   href={item.href}
                                   className={classNames(
                                     item.current
@@ -108,7 +117,7 @@ export default function Sidenav() {
                                     aria-hidden="true"
                                   />
                                   {item.name}
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -118,8 +127,9 @@ export default function Sidenav() {
                           <ul role="list" className="-mx-2 mt-2 space-y-1">
                             {teams.map((team) => (
                               <li key={team.name}>
-                                <a
+                                <Link
                                   href={team.href}
+                                  target='blank'
                                   className={classNames(
                                     team.current
                                       ? 'bg-gray-50 text-indigo-600'
@@ -138,7 +148,7 @@ export default function Sidenav() {
                                     {team.initial}
                                   </span>
                                   <span className="truncate">{team.name}</span>
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -156,20 +166,20 @@ export default function Sidenav() {
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
-            <div className="flex h-16 shrink-0 items-center">
+            <Link href="/" className="flex h-16 shrink-0 items-center">
               <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company"
+                className="h-12 w-auto"
+                src="/logo.png"
+                alt="ExperAI"
               />
-            </div>
+            </Link>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
+                        <Link
                           href={item.href}
                           className={classNames(
                             item.current
@@ -186,7 +196,7 @@ export default function Sidenav() {
                             aria-hidden="true"
                           />
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -196,7 +206,8 @@ export default function Sidenav() {
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {teams.map((team) => (
                       <li key={team.name}>
-                        <a
+                        <Link
+                          target='blank'
                           href={team.href}
                           className={classNames(
                             team.current
@@ -216,24 +227,19 @@ export default function Sidenav() {
                             {team.initial}
                           </span>
                           <span className="truncate">{team.name}</span>
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
                 </li>
                 <li className="-mx-6 mt-auto">
-                  <a
-                    href="#"
-                    className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
+                  <Link
+                    href="/pricing"
+                    className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:text-primary hover:bg-gray-50"
                   >
-                    <img
-                      className="h-8 w-8 rounded-full bg-gray-50"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      alt=""
-                    />
-                    <span className="sr-only">Your profile</span>
-                    <span aria-hidden="true">Tom Cook</span>
-                  </a>
+                    <span className="">Plan:</span>
+                    <span aria-hidden="true">{user?.planType === 'lite' ? 'Beginner' : 'Novice'}</span>
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -246,14 +252,9 @@ export default function Sidenav() {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
           <div className="flex-1 text-sm font-semibold leading-6 text-gray-900">Dashboard</div>
-          <a href="#">
-            <span className="sr-only">Your profile</span>
-            <img
-              className="h-8 w-8 rounded-full bg-gray-50"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt=""
-            />
-          </a>
+          <Link className='hover:text-primary' href="/pricing">
+            <span className="">{user?.planType === 'lite' ? 'Beginner' : 'Novice'} Plan</span>
+          </Link>
       </div>
     </>
   )

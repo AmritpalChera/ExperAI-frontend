@@ -1,53 +1,61 @@
-"use client";
+import Link from 'next/link';
 
-import { checkUrl } from "@/utils/app";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from 'react-toastify';
-import { ToastContainer } from 'react-toastify';
 
-export default function Hero() {
-  const [link, setLink] = useState('');
-  const router = useRouter();
-  const handleSubmit = () => {
-    if (!checkUrl(link)) {
-      return toast.error('Invalid URL')
-    }
-    else router.push(`/chat?url=${link}`);
-  };
-
-  const handleKeyDown = (event: any) => {
-    if (event.key === 'Enter') {
-      handleSubmit();
-    }
-  }
+export default function Example() {
 
   return (
-    <div className="flex w-full flex-col justify-center items-center">
-      <ToastContainer />
-      <h1 className="md:text-9xl text-4xl font-bold text-primary mt-32">Web it Fast</h1>
-      <h2 className="md:text-3xl text-2xl mt-6">Enter any URL</h2>
-      <div className=' w-full flex justify-center mx-2 mt-12'>
-            
-          <input onKeyDown={handleKeyDown} value={link} onChange={(e) => setLink(e.target.value)} autoFocus className='bg-white text-black cursor-text mx-2 rounded-3xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray' placeholder={`https//medium.com/...`}></input>
-      </div>
+    <div className="bg-white">
+     
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-blue-100/20 pt-14">
+        <div
+          className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-white shadow-xl shadow-blue-600/10 ring-1 ring-blue-50 sm:-mr-80 lg:-mr-96"
+          aria-hidden="true"
+        />
+        <div className="mx-auto max-w-7xl px-6 py-24 sm:py-40 lg:px-8">
+          {/* <div className='fixed top-0 w-screen text-center left-0 text-md font-semibold text-white bg-red'> - Introducing the new version of ExperAI - </div> */}
+          <div className="mx-auto max-w-2xl lg:mx-0 lg:grid lg:max-w-none lg:grid-cols-2 lg:gap-x-16 lg:gap-y-6 xl:grid-cols-1 xl:grid-rows-1 xl:gap-x-8">
+            <div className="max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:col-span-2 xl:col-auto">
+            <img
+                  className="h-12 w-auto"
+                  src="/logoShort.png"
+                  alt="ExperAI"
+                />
 
-      <div className="flex flex-col space-y-4 mt-12 sm:flex-row sm:space-x-4 sm:space-y-0">
-        <button
-          onClick={handleSubmit}
-          className="rounded-md text-center bg-primary w-48 py-4 px-8 text-base  font-semibold text-white duration-300 ease-in-out hover:bg-primary/80 cursor-pointer"
-        >
-          Search
-        </button>
-        {/* <Link
-          href="https://docs.mindplug.io/javascript-sdk"
-          className="rounded-md text-center bg-black/20 py-4 w-48 px-8 text-base font-semibold text-black duration-300 ease-in-out hover:bg-black/30 dark:bg-white/20 dark:text-white dark:hover:bg-white/30"
-        >
-          Random Chat
-        </Link> */}
+              <span className='md:text-9xl text-6xl'>Exper<span className='text-sky-700'>AI</span></span> <br/><br/>
+              Hub of AI experts
+            </div>
+            <div className="mt-6 max-w-xl lg:mt-0 xl:col-end-1 xl:row-start-1">
+              <p className="text-lg leading-8 text-gray-600">
+                Enter the temple of knowledge, generate experts and share with friends!
+              </p>
+              <div className="mt-10 flex items-center gap-x-6 relative">
+                <Link
+                  href="/chat"
+                  className="rounded-md  bg-blue-700 px-6 py-4 font-semibold w-[300px] text-center text-lg text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                >
+                  Start Chat...
+                  {/* <div className="absolute -top-3 left-52">
+                    <Image
+                      src="/cursors.png"
+                      alt="index-image"
+                      height={150}
+                      width={150}
+                      className="mx-auto max-w-full lg:mr-0 animate-pulse"
+                    />
+                  </div> */}
+                </Link>
+               
+              </div>
+            </div>
+            <img
+              src="/ssc.jpg"
+              alt=""
+              className="mt-10 aspect-[6/5] w-full max-w-lg rounded-2xl object-cover sm:mt-16 lg:mt-0 lg:max-w-none xl:row-span-2 xl:row-end-2 xl:mt-36"
+            />
+          </div>
+        </div>
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-white sm:h-32" />
       </div>
-
     </div>
   )
 }

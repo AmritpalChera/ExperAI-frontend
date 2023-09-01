@@ -8,3 +8,14 @@ export function checkUrl (string: string) {
   return true;
 }
 
+export const baseurl = process.env.NODE_ENV === 'development'? 'http://localhost:3000' : 'https://experai.com'
+
+export const CustomerPlans = {
+  LITE: 'lite',
+  BASIC: 'basic',
+  CUSTOM: 'custom'
+}
+
+const development = process.env.NODE_ENV === 'development';
+
+export const billManageURL = development ? 'https://billing.stripe.com/p/login/test_6oE7tQ6KPbWj4RW000' : 'https://billing.stripe.com/p/login/9AQ03j7hr8QdgEgaEE';

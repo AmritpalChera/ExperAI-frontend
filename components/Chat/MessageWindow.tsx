@@ -4,16 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addMessage, selectUser, setUserData } from "@/redux/features/UserSlice";
+import useExpertIntroduce from "@/hooks/useExpertIntroduce";
+import MessageContextMenu from "./MessageContextMenu";
+import UpgradeModal from "./UpgradeModal";
 
 export default function MessageWindow() {
   
   const user = useSelector(selectUser);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState('');
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
 
-  const {chatdata} = useSelector(selectUser);
+  const { chatdata } = useSelector(selectUser);
+  
+  useExpertIntroduce();
 
   const respond = async () => {
     if (!input) return toast.error('Please enter input');
@@ -22,14 +27,20 @@ export default function MessageWindow() {
     setLoading(true);
     setInput('');
     dispatch(addMessage({ content: input, role: 'user' }));
-    const data = await backend.post('/respond', { search: input, chatHistory: chatdata.slice(0, 5), npcId: user.npcId, userId: user.id }).then(res => res.data).catch(err => {
+    const data = await backend.post('/npc/respond', {latestMessage: input, npcId: user.npcDetails.npcId, userId: user.id, groupId: user.activeGroup?.groupId }).then(res => res.data).catch(err => {
       console.log('err', err);
-      toast.error('Something went wrong');
+      if (err?.response?.data?.premium) {
+        toast.error('Message limit reached');
+        dispatch(setUserData({ upgradeModal: {open: true, message: err?.response?.data?.error}}))
+      } else {
+        toast.error('Something went wrong');
+      }
+      
     });
    
     if (data) {
       dispatch(setUserData({ webSources: data.externalData?.data || [] }))
-      dispatch(addMessage({ content: data.answer, role: 'assistant' }));
+      dispatch(addMessage({ ...data.output, content: data.output.text, role: 'assistant' }));
     }
     setLoading(false);
   }
@@ -38,6 +49,10 @@ export default function MessageWindow() {
     if (event.key === 'Enter') {
       respond();
     }
+  }
+
+  const handleContextClick = () => {
+    dispatch(setUserData({contextUploadOpen: true }))
   }
 
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -52,8 +67,28 @@ export default function MessageWindow() {
   return (
     <div ref={windowRef} className='max-w-3xl w-full py-6 flex flex-col gap-4 lg:h-[calc(100vh-2rem)] h-[calc(100vh-4rem)] overflow-y-hidden'>
       <div className="flex justify-between">
-        <h1 className="text-primary font-bold">ExperAI</h1>
-        {chatdata.length > 5 && <button className="bg-red animate-pulse px-4 py-1 rounded-lg text-white">Save Chat</button>}
+        <div className="flex gap-4">
+          <div className="h-10 w-10">
+            <img src={user.npcDetails?.imageUrl} className="rounded-full w-full h-full object-cover" />
+          </div>
+          <div>
+            <h1 className="text-primary font-bold">{user.npcDetails?.name}</h1>
+            <p className="font-semibold text-gray-400">Active</p>
+          </div>
+          
+        </div>
+        
+        {/* {chatdata.length > 5 && !user.id && <button className="bg-red animate-pulse px-4 py-1 rounded-lg text-white">Save Chat</button>} */}
+        {user.id && (
+          <div className="flex gap-4">
+            {/* <button className="bg-red px-4 py-1 rounded-lg text-white">Clear</button> */}
+            {/* <button className="bg-dark px-4 py-0 rounded-lg text-white">New Session</button> */}
+            <div className='hover:text-primary'>
+              <span onClick={handleContextClick} className="bg-dark xl:hidden rounded-xl text-white py-1 px-4 cursor-pointer hover:bg-dark/80">Context</span>
+            </div>
+          </div>
+
+          )}
       </div>
         <div className='flex-1 flex flex-col gap-4 h-full overflow-y-scroll noScrollbar'>
           
@@ -62,19 +97,24 @@ export default function MessageWindow() {
               chatdata.map((message: any, index: number) => {
                 if (message.role === 'user') {
                   return (
-                    <div key={index} className='flex justify-end'>
+                    <div key={index} className='flex justify-end relative'>
                       <h3 className='w-fit px-6 py-3 shadow-md rounded-t-2xl !rounded-l-2xl bg-primary max-w-xs lg:max-w-3xl text-white text-[16px]'>
                         {message.content}
                       </h3>
+                      
                     </div>
                   )
                 } else return (
-                  <div key={index}>
-                    <h3
-                      className='px-6 py-3 shadow shadow-slate-500 text-[16px] bg-black/20 rounded-t-2xl !rounded-r-2xl w-fit leading-6 whitespace-pre-wrap'
+                  <div key={index} className="relative flex justify-between w-fit">
+                    <div
+                      className='px-6 py-3 shadow relative shadow-slate-300 text-[16px] min-w-[330px] bg-black/5 rounded-t-2xl !rounded-r-2xl w-fit leading-6 whitespace-pre-wrap'
                     >
-                      {message.content}  
-                    </h3>
+                      {message.content}                        
+                    </div>
+                    {message.contextName && <div className="flex items-end cursor-pointer ">
+                        <MessageContextMenu score={message.contextScore} filename={message.contextName} description={message.contextDescription} />
+                    </div>
+                    }
                   </div>
                 )
               })
@@ -85,17 +125,23 @@ export default function MessageWindow() {
         </div>
       
       <div>
-        <div className="relative flex-grow">
-          <label>
-            <input value={input} onChange={(e) => setInput(e.target.value)} className="bg-white pr-12 text-black cursor-text rounded-3xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray"
+        <div className="relative flex-grow ">
+          {loading && <div className=" w-full animate-pulse px-6">
+            <div className="w-full border-red rounded-3xl coolBlueGradient h-2 -mb-1">
+            </div>
+          </div>}
+          <label className="relative">
+
+            <input value={input} onChange={(e) => setInput(e.target.value)} className="bg-white pr-12 text-black cursor-text rounded-3xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray focus-visible:outline-0"
               onKeyDown={handleKeyDown} autoFocus placeholder="Aa..."/>
       
-            <button type="button" onClick={respond} className="absolute right-2 top-[12px]">
+            <button type="button" onClick={respond} className="absolute right-2 mt-3">
                 <PaperAirplaneIcon className='h-6 w-6 text-primary' />
             </button>
           </label>
         </div>
       </div>
+      <UpgradeModal />
     </div>
   )
 }

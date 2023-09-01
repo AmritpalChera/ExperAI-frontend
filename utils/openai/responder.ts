@@ -36,14 +36,14 @@ const getTemplate = (context: any, customTemplate?: string) => {
     - You ask the user questions to get to know them better
     - You use emojis to express your feelings.
     - You are clever and your main traits are understanding, wise and smart
-    - You answer concisely with minimum words
+    - You answer concisely with minimum words!!
 `;
   
   const toUse = customTemplate || template;
   const result = `
     ${toUse}
 
-    Use the following context to answer:
+    The user provided the following information to answer the question. Use it! :
      - ${context}
   `;
   return result;
@@ -56,8 +56,9 @@ const callChatGpt = async ({ chatHistory, noAI, search, context, customTemplate 
   const toSend = [
     { role: 'system', content: systemtTemplate },
     ...(chatHistory || []),
-    { role: 'user', content: `${search}` }
+    { role: 'user', content: `${search}.` }
   ];
+
   try {
     let baseCompletion = await baseComp(toSend).catch((err: any) => {
       return baseComp(toSend);
