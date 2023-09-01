@@ -4,6 +4,7 @@ import { CheckIcon } from '@heroicons/react/24/outline'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, setUserData } from '@/redux/features/UserSlice';
 import supabase from '@/utils/setup/supabase';
+import mixpanel from 'mixpanel-browser';
 
 export default function SigninModal() {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,8 @@ export default function SigninModal() {
   async function signInWithGoogle() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-    })
+    });
+    mixpanel.track('signin');
   };
 
   return (

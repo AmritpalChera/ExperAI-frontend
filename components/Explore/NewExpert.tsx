@@ -8,6 +8,7 @@ import { selectUser, setUserData } from '@/redux/features/UserSlice';
 import {  toast } from 'react-toastify';
 import { ThreeDots } from 'react-loader-spinner';
 import { useRouter } from 'next/navigation';
+import mixpanel from 'mixpanel-browser';
 
 export default function NewExpert({ open, setOpen }: any) {
  
@@ -28,6 +29,7 @@ export default function NewExpert({ open, setOpen }: any) {
       expertJob: toGenerate
     }).then(res => res.data).catch(err => { });
     const generatedExpert = generatedExpertData?.data;
+    mixpanel.track('expert generated');
     if (generatedExpert?.group) {
       dispatch(setUserData({ activeGroup: generatedExpert.group }));
       router.push('/chat');

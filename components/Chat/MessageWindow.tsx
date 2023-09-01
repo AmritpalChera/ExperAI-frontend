@@ -7,6 +7,7 @@ import { addMessage, selectUser, setUserData } from "@/redux/features/UserSlice"
 import useExpertIntroduce from "@/hooks/useExpertIntroduce";
 import MessageContextMenu from "./MessageContextMenu";
 import UpgradeModal from "./UpgradeModal";
+import mixpanel from "mixpanel-browser";
 
 export default function MessageWindow() {
   
@@ -35,9 +36,10 @@ export default function MessageWindow() {
       } else {
         toast.error('Something went wrong');
       }
-      
     });
-   
+    mixpanel.track('expert respond', {
+      input, answer: data.output?.text
+    });
     if (data) {
       dispatch(setUserData({ webSources: data.externalData?.data || [] }))
       dispatch(addMessage({ ...data.output, content: data.output.text, role: 'assistant' }));
@@ -52,6 +54,7 @@ export default function MessageWindow() {
   }
 
   const handleContextClick = () => {
+    mixpanel.track('Mobile custom context clicked');
     dispatch(setUserData({contextUploadOpen: true }))
   }
 

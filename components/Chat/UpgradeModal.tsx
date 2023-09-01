@@ -1,13 +1,13 @@
 "use client";
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/24/outline'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectUser, setUserData } from '@/redux/features/UserSlice'
 import Link from 'next/link';
 import backend from '@/utils/app/axios';
 import { useRouter } from 'next/navigation';
 import { CustomerPlans } from '@/utils/app';
+import mixpanel from 'mixpanel-browser';
 
 export default function UpgradeModal() {
   const user = useSelector(selectUser);
@@ -19,6 +19,7 @@ export default function UpgradeModal() {
   }
 
   const handleUpgradeClick = async () => {
+    mixpanel.track('upgrade modal button clicked')
     await backend.post('/stripe/checkoutSession', {
       priceId: CustomerPlans.BASIC,
       email: user.email,

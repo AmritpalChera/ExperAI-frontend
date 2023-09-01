@@ -10,6 +10,7 @@ import supabase from '@/utils/setup/supabase';
 import { toast } from 'react-toastify';
 import backend from '@/utils/app/axios';
 import { useSearchParams } from 'next/navigation';
+import mixpanel from 'mixpanel-browser';
 
 export default function Chat() {
   const user = useSelector(selectUser);
@@ -48,8 +49,14 @@ export default function Chat() {
   }
 
   useEffect(() => {
-    if (user.groups && user.id) loadChatdata();
-    else if (!user.id) dispatch(setUserData({ signinOpen: true }));
+    if (user.groups && user.id) {
+      mixpanel.track('loading chat data');
+      loadChatdata();
+    }
+    else if (!user.id) {
+      mixpanel.track('opening signin');
+      dispatch(setUserData({ signinOpen: true }));
+    }
   }, [user.groups])
 
   return (

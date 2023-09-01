@@ -5,6 +5,7 @@ import backend from "@/utils/app/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, setUserData } from "@/redux/features/UserSlice";
 import { useRouter } from "next/navigation";
+import mixpanel from "mixpanel-browser";
 
 export default function GroupCard({ group, setActiveGroup, index }: any) {
   const date = group.lastUpdated ? new Date(group.lastUpdated).toLocaleDateString() : '';
@@ -53,6 +54,7 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
   
 
   const handleOptionClick = (option: string) => {
+    mixpanel.track(`Explore card option click - ${option}`)
     if (option === 'copyLink') {
       navigator.clipboard.writeText(`${baseurl}/chat?name=${group.name}&eid=${group.npcId?.npcId}`);
       toast.info('Link Copied!')

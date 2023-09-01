@@ -8,6 +8,7 @@ import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { baseurl } from "@/utils/app";
 import { toast } from "react-toastify";
+import mixpanel from "mixpanel-browser";
 
 
 export type WebResults = {
@@ -26,10 +27,12 @@ export default function PowerView() {
   const dispatch = useDispatch();
 
   const handleUploadOpen = (open: boolean) => {
+    mixpanel.track('Custom context clicked');
     dispatch(setUserData({contextUploadOpen: open}))
   }
 
   const handleShare = () => {
+    mixpanel.track('Chat share button clicked');
     navigator.clipboard.writeText(`${baseurl}/chat?name=${user.activeGroup?.name}&eid=${user.activeGroup?.npcId?.npcId}`);
     toast.info('Link Copied');
   }
