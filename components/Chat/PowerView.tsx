@@ -39,7 +39,7 @@ export default function PowerView() {
         <div className='flex flex-col gap-4 flex-1'>
           <h1 className='text-primary text-center font-bold'>Power View</h1>
           {/* {user?.webSources?.length > 0 && user?.webSources?.map((source: WebResults) => resultCard(source))} */}
-          <p>We're still exploring what to add here. If you have any ideas, drop them in the discord!</p>
+          <p>We&#39;re still exploring what to add here. If you have any ideas, drop them in the discord!</p>
         </div>
         <div className='flex flex-col gap-4'>
           <Sidebar open={open} setOpen={handleUploadOpen} />
