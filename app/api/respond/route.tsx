@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     let context;
     if (userId && npcId) {
       const urlHash = createHash('sha256').update(`${userId}-${npcId}`).digest('hex');
-      context = await mindplug.query({ db: 'experAi-contexts', collection: urlHash, search: shortContext || search, count: 1 }).then(res => res.data);
+      context = await mindplug.query({ db: 'experAi-contexts', collection: urlHash, search: shortContext || search, count: 1 }).then((res: any) => res.data);
       context = context && context[0];
       if (context?.score <= 0.75) {
         context = undefined;
