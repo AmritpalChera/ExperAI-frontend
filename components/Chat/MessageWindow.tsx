@@ -38,7 +38,7 @@ export default function MessageWindow() {
       }
     });
     mixpanel.track('expert respond', {
-      input, answer: data.output?.text
+      input, answer: data.output?.text, npcId: user.npcDetails?.npcId, npcJob: user.npcDetails?.jobTitle
     });
     if (data) {
       dispatch(setUserData({ webSources: data.externalData?.data || [] }))
