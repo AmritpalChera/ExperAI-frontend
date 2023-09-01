@@ -15,11 +15,12 @@ export default function useSessionProvider() {
     const session = await supabase.auth.getSession();
     const user: any = session?.data?.session?.user;
     dispatch(setUserData({ ...user, loaded: true }));
-
     if (user?.id) {
       mixpanel.identify(user.id);
       const customerData = await supabase.from('customers').select('plan').eq('userId', user.id).single();
       dispatch(setUserData({ planType: customerData?.data?.plan || 'lite' }))
+    } else {
+      mixpanel.track('user not logged in');
     }
     // Track an event. It can be anything, but in this example, we're tracking a Signed Up event.
     // Include a property about the signup, like the Signup Type

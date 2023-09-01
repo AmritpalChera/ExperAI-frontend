@@ -1,9 +1,7 @@
 "use client";
 
 import { selectUser, setUserData } from "@/redux/features/UserSlice"
-import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux"
-import parse from 'html-react-parser';
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { baseurl } from "@/utils/app";
