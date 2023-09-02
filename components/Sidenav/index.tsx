@@ -4,6 +4,7 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
+  BoltIcon,
   CalendarIcon,
   ChartPieIcon,
   DocumentDuplicateIcon,
@@ -30,7 +31,7 @@ export default function Sidenav() {
   const navigation = [
     { name: 'Chat', href: '/chat', icon: HomeIcon, current: pathname === '/chat' },
     { name: 'My Experts', href: '/experts', icon: UsersIcon, current: pathname === '/experts' },
-    // { name: 'Notes', href: '#', icon: FolderIcon, current: false },
+    // { name: 'Explore', href: '/explore', icon: BoltIcon, current: pathname === '/explore' },
     // { name: 'Integrate', href: '#', icon: CalendarIcon, current: false },
     // { name: 'Guide', href: '#', icon: DocumentDuplicateIcon, current: false },
     // { name: 'Profile', href: '#', icon: ChartPieIcon, current: false },

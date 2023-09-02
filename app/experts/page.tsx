@@ -1,9 +1,9 @@
-import Explore from "@/components/Explore";
+import Experts from "@/components/Experts";
 
 export default function MyExpertPage() {
   return (
     <div>
-      <Explore />
+      <Experts />
     </div>
   )
 }

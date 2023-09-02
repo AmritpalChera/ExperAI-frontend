@@ -10,7 +10,9 @@ import {
   LinkIcon,
   SquaresPlusIcon,
   TrashIcon,
-} from '@heroicons/react/24/outline'
+} from '@heroicons/react/24/outline';
+import { useState } from 'react'
+import { Switch } from '@headlessui/react'
 
 const solutions = [
   { name: 'Copy Link', description: 'Share a link to friends and family', href: '#', icon: LinkIcon },
@@ -20,9 +22,12 @@ const solutions = [
   // { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
 ]
 const callsToAction = [
-  { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
+  { name: 'Make Public', href: '#', icon: PlayCircleIcon },
   { name: 'Contact sales', href: '#', icon: PhoneIcon },
 ]
+function classNames(...classes: any) {
+  return classes.filter(Boolean).join(' ')
+}
 
 export default function Menu({handleOptionClick}: any) {
   const solutions = [
@@ -32,6 +37,12 @@ export default function Menu({handleOptionClick}: any) {
     { name: 'Tweet', description: 'Share your experience online', href: '#', icon: CursorArrowRaysIcon, id: 'tweet' },
     { name: 'Delete', description: "Delete chat", href: '#', icon: TrashIcon, id:'delete' },
   ];
+  const [enabled, setEnabled] = useState(false);
+
+  const makePublic = (e: MouseEvent) => {
+    e.stopPropagation();
+    setEnabled(true);
+  }
 
 
   return (
@@ -73,18 +84,38 @@ export default function Menu({handleOptionClick}: any) {
                 </div>
               ))}
             </div>
-            {/* <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-              {callsToAction.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100"
+            <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50 py-3 px-6">
+              <div className='flex gap-4 justify-center'>
+                <span className='font-bold text-primary'>Make public</span>
+                <Switch
+                  checked={enabled}
+                  onChange={setEnabled}
+                  onClick={(e) => e.stopPropagation()}
+                  className="group relative inline-flex h-5 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
                 >
-                  <item.icon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-                  {item.name}
-                </a>
-              ))}
-            </div> */}
+                  <span className="sr-only">Use setting</span>
+                  <span aria-hidden="true" className="pointer-events-none absolute h-full w-full rounded-md bg-white" />
+                  <span
+                    aria-hidden="true"
+                    className={classNames(
+                      enabled ? 'bg-indigo-600' : 'bg-gray-200',
+                      'pointer-events-none absolute mx-auto h-4 w-9 rounded-full transition-colors duration-200 ease-in-out'
+                    )}
+                  />
+                  <span
+                    aria-hidden="true"
+                    className={classNames(
+                      enabled ? 'translate-x-5' : 'translate-x-0',
+                      'pointer-events-none absolute left-0 inline-block h-5 w-5 transform rounded-full border border-gray-200 bg-white shadow ring-0 transition-transform duration-200 ease-in-out'
+                    )}
+                  />
+                </Switch>
+              </div>
+              <div onClick={(e) => {e.stopPropagation()}} className='flex text-center justify-center'>
+                <h1 className={`font-bold ${enabled? 'text-primary' : 'text-gray-500'} `}>Share</h1>
+              </div>
+
+            </div>
           </div>
         </Popover.Panel>
       </Transition>

@@ -117,7 +117,7 @@ export default function Pricing() {
     if (user.id) loadAnalytics();
   }, [user.id]);
 
-  const hasRemainingCreds = (tierId: string) => CustomerPlans.CUSTOM === tierId && messageCredits;
+  const hasRemainingCreds = (tierId: string) => (CustomerPlans.CUSTOM === tierId && messageCredits);
 
   return (
     <div className="bg-white py-24 sm:py-32">
@@ -159,7 +159,7 @@ export default function Pricing() {
                     </p>
                   ) : null}
                 </div>
-                {hasRemainingCreds(tier.id) && <p className='text-sm mt-3 text-primary font-semibold'>Remaining Credits: { messageCredits }</p>}
+                {hasRemainingCreds(tier.id) ? <p className='text-sm mt-3 text-primary font-semibold'>Remaining Credits: {messageCredits}</p> : ''}
                 {!hasRemainingCreds(tier.id) && <p className="mt-4 text-sm leading-6 text-gray-600">{tier.description}</p>}
                 <p className="mt-6 flex items-baseline gap-x-1">
                   <span className="text-4xl font-bold tracking-tight text-gray-900">{tier.priceMonthly}</span>
