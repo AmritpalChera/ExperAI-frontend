@@ -253,8 +253,8 @@ export default function Sidenav() {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
           <div className="flex-1 text-sm font-semibold leading-6 text-gray-900">Dashboard</div>
-          <Link className='hover:text-primary' href="/pricing">
-            <span className="">{user?.planType === 'lite' ? 'Beginner' : 'Novice'} Plan</span>
+          <Link className='text-primary' href="/experts">
+            <span className="">My experts</span>
           </Link>
       </div>
     </>
