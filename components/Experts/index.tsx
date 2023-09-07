@@ -34,28 +34,6 @@ export default function Experts() {
     else dispatch(setUserData({ signinOpen: true }));
   }, []);
 
-  const groupCardCompact = (group: any) => {
-    const date = group.lastUpdated ? new Date(group.lastUpdated).toLocaleDateString() : '';
-    return (
-      <div key={group.groupId} onClick={()=>setActiveGroup(group)} className="shadow flex gap-4 border p-4 rounded-lg hover:shadow-lg cursor-pointer">
-        <div className="flex h-12 w-12 relative rounded-full bg-green-100">
-          <img src={group.imageUrl} className="h-full w-full object-cover rounded-full" />
-        </div>
-        <div className=" w-full">
-          <div className="flex justify-between mb-1">
-            <h1 className="font-bold">{group.name}</h1>
-            {/* <p className="text-primary hover:font-semibold">Options</p> */}
-            <Menu />
-          </div>
-          
-          <div className="flex gap-4 w-full">
-            <p className="flex-1 text-gray-500">{group.lastMessage?.substring(0, 70)}...</p>
-            <p className="text-gray-500">{date}</p>
-          </div>
-        </div>
-      </div>
-    )
-  };
 
   const groupCardNew = () => {
     return (

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser, setUserData } from "@/redux/features/UserSlice";
 import { useRouter } from "next/navigation";
 import mixpanel from "mixpanel-browser";
+import supabase from "@/utils/setup/supabase";
 
 export default function GroupCard({ group, setActiveGroup, index }: any) {
   const date = group.lastUpdated ? new Date(group.lastUpdated).toLocaleDateString() : '';
@@ -49,6 +50,22 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
     const tweet = (`Had a blast chatting with "${group.name}" on experai.com\n\nLink: ${baseurl}/chat?name=${group.name}&eid=${group.npcId?.npcId}`);
 
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`, '_blank');
+  }
+
+  const handleMakePublic = async () => {
+
+    // add to public_NPC
+    const publicGroupData = await supabase.from('public_NPC').upsert({ npcId: group.npcId?.npcId, creatorId: group.creatorId, groupId: group.groupId });
+    if (publicGroupData.error) throw toast.error('Could not get public npc data');
+    // set group status to public
+    await supabase.from('Group').update({ isPublic: true }).eq('groupId', group.groupId);
+  }
+
+  const handleMakePrivate = async () => {
+    const publicGroupData = await supabase.from('public_NPC').delete().eq('groupId', group.groupId);
+    if (publicGroupData.error) throw toast.error('Could not get public npc data');
+    // set group status to public
+    await supabase.from('Group').update({ isPublic: false }).eq('groupId', group.groupId);
   }
   
   

@@ -1,6 +1,6 @@
 "use client";
 
-import { logout, selectUser } from '@/redux/features/UserSlice'
+import { logout, selectUser, setUserData } from '@/redux/features/UserSlice'
 import { CustomerPlans, billManageURL } from '@/utils/app';
 import backend from '@/utils/app/axios';
 import supabase from '@/utils/setup/supabase';
@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify';
+import SigninModal from '../SigninModal';
 
 
 
@@ -71,7 +72,7 @@ export default function Pricing() {
   ];
 
   const handlePricingClick = async (id: string) => {
-    if (!user.email) return router.push('/signin');
+    if (!user.email) return dispatch(setUserData({ signinOpen: true }));
     if (id === CustomerPlans.LITE && user.planType === CustomerPlans.LITE) return toast.error('Already on lite plan.');
     else if ((user.planType === CustomerPlans.LITE) || (id === CustomerPlans.CUSTOM)) {
       await backend.post('/stripe/checkoutSession', {
@@ -198,7 +199,7 @@ export default function Pricing() {
         <p className='mt-12 text-primary cursor-pointer hover:underline' onClick={signout}>Signout</p>
       </div>
       <div>
-        
+      <SigninModal />
       </div>
     </div>
   )

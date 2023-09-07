@@ -39,11 +39,6 @@ export default function Menu({handleOptionClick}: any) {
   ];
   const [enabled, setEnabled] = useState(false);
 
-  const makePublic = (e: MouseEvent) => {
-    e.stopPropagation();
-    setEnabled(true);
-  }
-
 
   return (
     <Popover className="relative">
