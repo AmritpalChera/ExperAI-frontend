@@ -27,7 +27,12 @@ export default function NewExpert({ open, setOpen }: any) {
     const generatedExpertData = await backend.post('/npc/generateFriend', {
       userId: user.id,
       expertJob: toGenerate
-    }).then(res => res.data).catch(err => { });
+    }).then(res => res.data).catch(err => {
+      if (err?.response?.data?.premium) {
+        dispatch(setUserData({ upgradeModal: { open: true, message: 'Friends limit reached' } }));
+        setOpen(false);
+      }
+    });
     const generatedExpert = generatedExpertData?.data;
     mixpanel.track('expert generated');
     if (generatedExpert?.group) {

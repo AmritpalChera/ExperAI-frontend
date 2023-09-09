@@ -31,7 +31,9 @@ export default function PowerView() {
 
   const handleShare = () => {
     mixpanel.track('Chat share button clicked');
-    navigator.clipboard.writeText(`${baseurl}/chat?name=${user.activeGroup?.name}&eid=${user.activeGroup?.npcId?.npcId}`);
+    const group = user.activeGroup;
+    if (!group?.creatorId) throw toast.error("Please start a new session to share");
+    navigator.clipboard.writeText(`${baseurl}/chat?name=${user.activeGroup?.name}&eid=${user.activeGroup?.npcId?.npcId}&cid=${user.activeGroup.creatorId}`);
     toast.info('Link Copied');
   }
   return (

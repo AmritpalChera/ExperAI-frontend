@@ -28,7 +28,7 @@ export default function MessageWindow() {
     setLoading(true);
     setInput('');
     dispatch(addMessage({ content: input, role: 'user' }));
-    const data = await backend.post('/npc/respond', {latestMessage: input, npcId: user.npcDetails.npcId, userId: user.id, groupId: user.activeGroup?.groupId }).then(res => res.data).catch(err => {
+    const data = await backend.post('/npc/respond', {latestMessage: input, npcId: user.npcDetails.npcId, userId: user.id, groupId: user.activeGroup?.groupId, creatorId: user.activeGroup?.creatorId || user.id }).then(res => res.data).catch(err => {
       console.log('err', err);
       if (err?.response?.data?.premium) {
         toast.error('Message limit reached');
@@ -138,7 +138,7 @@ export default function MessageWindow() {
             <input value={input} onChange={(e) => setInput(e.target.value)} className="bg-white pr-12 text-black cursor-text rounded-3xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray focus-visible:outline-0"
               onKeyDown={handleKeyDown} autoFocus placeholder="Aa..."/>
       
-            <button type="button" onClick={respond} className="absolute right-2 mt-3">
+            <button type="button" onClick={respond} className="absolute right-0 p-3">
                 <PaperAirplaneIcon className='h-6 w-6 text-primary' />
             </button>
           </label>

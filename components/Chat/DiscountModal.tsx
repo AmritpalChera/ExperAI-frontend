@@ -9,10 +9,12 @@ import { useRouter } from 'next/navigation';
 import { CustomerPlans } from '@/utils/app';
 import mixpanel from 'mixpanel-browser';
 
-export default function UpgradeModal() {
+export default function DiscountModal() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [modalUsed, setModalUsed] = useState(!!localStorage.getItem('discountModalUsed'));
+  const [showModal, setShowModal] = useState(!modalUsed && user.chatData?.length > 1 && user.planType === CustomerPlans.LITE);
 
   const closeModal = () => {
     dispatch(setUserData({upgradeModal: {open: false, message: ''}}))
@@ -31,8 +33,10 @@ export default function UpgradeModal() {
     });
   }
 
+  console.log('showing modal')
+
   return (
-    <Transition.Root show={!!user.upgradeModal?.open} as={Fragment}>
+    <Transition.Root show={!!showModal} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
@@ -72,7 +76,7 @@ export default function UpgradeModal() {
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        {user.upgradeModal?.message}
+                        We recently had a wonderful launch of ExperAI 3.0. To celebrate, we&#39;re giving all users 30% off for lifetime on our Novice plan.
                       </p>
                     </div>
                   </div>
@@ -80,7 +84,7 @@ export default function UpgradeModal() {
                 <div className="mt-5 sm:mt-6">
                   <div
                     onClick={handleUpgradeClick}
-                    className="inline-flex w-full cursor-pointer justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Upgrade
                   </div>

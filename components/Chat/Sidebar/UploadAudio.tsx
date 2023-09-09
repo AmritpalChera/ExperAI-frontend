@@ -43,6 +43,8 @@ export default function UploadAudio({ setUploadType, limitHandler }: any) {
     setLoading(true);
     try {
       // await backend.post('/data/store/file', data);
+      const creatorId = user.activeGroup?.creatorId;
+      if (creatorId !== user.id) throw toast.error('Not allowed for 3rd party groups');
       const urlHash = createHash('sha256').update(`${user.id}-${user.npcDetails.npcId}`).digest('hex');
       const data = await mindplug.storeAudio({ file, db: 'experAi-contexts', collection: urlHash, metadata: { fileName: file.name }});
       const uploadId = data?.data?.uploadId;

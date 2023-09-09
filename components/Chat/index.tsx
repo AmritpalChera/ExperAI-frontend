@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import backend from '@/utils/app/axios';
 import { useSearchParams } from 'next/navigation';
 import mixpanel from 'mixpanel-browser';
+import UpgradeModal from './UpgradeModal';
 
 export default function Chat() {
   const user = useSelector(selectUser);

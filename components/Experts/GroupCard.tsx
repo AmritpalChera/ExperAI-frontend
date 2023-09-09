@@ -17,7 +17,8 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
   const handleNewSession = async () => {
     let newGroupData = await backend.post('/group/new', {
       userId: user.id,
-      npcId: group.npcId?.npcId
+      npcId: group.npcId?.npcId,
+      creatorId: group?.creatorId
     }).then(res => res.data).catch(err => {
       if (err?.response?.data?.premium) {
         toast.error('Friend limit reached');
@@ -27,9 +28,12 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
       }
     });
     let newGroup = newGroupData?.data;
-    let activeChat = { ...newGroup.group, lastMessage: '' };
-    dispatch(setUserData({ activeGroup: activeChat }));
-    router.push('/chat');
+    if (newGroup) {
+      let activeChat = { ...newGroup.group, lastMessage: '' };
+      dispatch(setUserData({ activeGroup: activeChat }));
+      router.push('/chat');
+    }
+    
   };
 
   const handleDeleteGroup = async () => {
@@ -47,7 +51,9 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
   }
 
   const handleTweet = () => {
-    const tweet = (`Had a blast chatting with "${group.name}" on experai.com\n\nLink: ${baseurl}/chat?name=${group.name}&eid=${group.npcId?.npcId}`);
+
+    let tweet = (`Had a blast chatting with "${group.name}" on experai.com\n\nLink: ${baseurl}/chat`);
+    if (group.creatorId) tweet += `?name=${group.name}&eid=${group.npcId?.npcId}&cid=${group.creatorId}`;
 
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`, '_blank');
   }
@@ -73,7 +79,8 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
   const handleOptionClick = (option: string) => {
     mixpanel.track(`Explore card option click - ${option}`)
     if (option === 'copyLink') {
-      navigator.clipboard.writeText(`${baseurl}/chat?name=${group.name}&eid=${group.npcId?.npcId}`);
+      if (!group.userId || !group.creatorId) throw "Start a new session to share this group";
+      navigator.clipboard.writeText(`${baseurl}/chat?name=${group.name}&eid=${group.npcId?.npcId}&cid=${group.creatorId}`);
       toast.info('Link Copied!')
     } else if (option === 'newSession') {
       handleNewSession();

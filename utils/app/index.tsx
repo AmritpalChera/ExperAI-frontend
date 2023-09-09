@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export function checkUrl (string: string) {
   let givenURL ;
   try {

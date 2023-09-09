@@ -36,14 +36,17 @@ export default function HomeSelect({ setUploadType, uploadType }: any) {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const handlePreselect = (itemId: string) => {
-    if (!user.id) dispatch(setUserData({ signinOpen: true }));
+    if (!user.id) return dispatch(setUserData({ signinOpen: true }));
+    const creatorId = user.activeGroup?.creatorId || user.id;
+    if (creatorId !== user.id) throw toast.error('Not allowed for 3rd party groups');
     else setUploadType(itemId)
   };
   const [uploadedTypes, setUploadedTypes] = useState<any>([]);
 
 
   const getPreviousUploads = async () => {
-    const prevUploadData = await supabase.from('exp-contexts').select('name, type, uploadId').eq('npcId', user.npcDetails?.npcId).eq('userId', user.id);
+    const creatorId = user.activeGroup?.creatorId;
+    const prevUploadData = await supabase.from('exp-contexts').select('name, type, uploadId').eq('npcId', user.npcDetails?.npcId).eq('userId', creatorId || user.id);
     if (prevUploadData.error) {
       toast.error('Could not get context');
       return console.log('Could not get previous context');
@@ -64,6 +67,8 @@ export default function HomeSelect({ setUploadType, uploadType }: any) {
   }
 
   const handleDeleteUpload = async (uploadId: string) => {
+    const creatorId = user.activeGroup?.creatorId;
+    if (creatorId !== user.id) throw toast.error('Not allowed for 3rd party groups');
     const urlHash = createHash('sha256').update(`${user.id}-${user.npcDetails?.npcId}`).digest('hex');
     const data = await mindplug.deleteByUploadId({ uploadId, db: 'experAi-contexts', collection: urlHash });
     if (data.success) {
@@ -110,7 +115,7 @@ export default function HomeSelect({ setUploadType, uploadType }: any) {
         ))}
       </ul>
       <div className="mt-6 justify-end flex">
-        <Link href="/api" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+        <Link href="https://mindplug.io" target='blank' className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
           Build your own
           <span aria-hidden="true"> &rarr;</span>
         </Link>

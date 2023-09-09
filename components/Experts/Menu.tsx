@@ -79,7 +79,7 @@ export default function Menu({handleOptionClick}: any) {
                 </div>
               ))}
             </div>
-            <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50 py-3 px-6">
+            {/* <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50 py-3 px-6">
               <div className='flex gap-4 justify-center'>
                 <span className='font-bold text-primary'>Make public</span>
                 <Switch
@@ -110,7 +110,7 @@ export default function Menu({handleOptionClick}: any) {
                 <h1 className={`font-bold ${enabled? 'text-primary' : 'text-gray-500'} `}>Share</h1>
               </div>
 
-            </div>
+            </div> */}
           </div>
         </Popover.Panel>
       </Transition>

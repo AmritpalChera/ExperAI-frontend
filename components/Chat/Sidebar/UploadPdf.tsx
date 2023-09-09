@@ -28,7 +28,9 @@ export default function UploadPdf({ setUploadType, limitHandler }: any) {
 
     setLoading(true);
     try {
-      // await backend.post('/data/store/file', data);
+      // await backend.post('/data/store/file', data);\
+      const creatorId = user.activeGroup?.creatorId;
+      if (creatorId !== user.id) throw toast.error('Not allowed for 3rd party groups');
       const urlHash = createHash('sha256').update(`${user.id}-${user.npcDetails.npcId}`).digest('hex');
       const data = await mindplug.storePDF({ file: file, db: 'experAi-contexts', collection: urlHash });
       const uploadId = data?.data?.uploadId;

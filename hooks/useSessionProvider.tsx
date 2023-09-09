@@ -33,12 +33,14 @@ export default function useSessionProvider() {
     const groupsData = await backend.post('/user/listGroups', { userId: user.id });
     let groups = groupsData?.data?.data;
     const customExpert = params.get('eid');
+    const creatorId = params.get('cid');
     let activeChat: any;
     if ((groups && groups.length < 1) || customExpert) {
       // create new group with experAI
       let newGroupData = await backend.post('/group/unique', {
         userId: user.id,
-        npcId: customExpert || '46d9456d-c2ea-41ed-b436-8afb7131f90b'
+        npcId: customExpert || '46d9456d-c2ea-41ed-b436-8afb7131f90b',
+        creatorId: creatorId
       }).then(res => res.data).catch(err => {
         if (err?.response?.data?.premium) {
           toast.error('Friend limit reached');
@@ -56,7 +58,8 @@ export default function useSessionProvider() {
       if (!newGroup) {
         newGroupData = await backend.post('/group/unique', {
           userId: user.id,
-          npcId: '46d9456d-c2ea-41ed-b436-8afb7131f90b'
+          npcId: '46d9456d-c2ea-41ed-b436-8afb7131f90b',
+          creatorId: user.id
         }).then(res => res.data).catch(err => {
           if (err?.response?.data?.premium) {
             toast.error('Friend limit reached');
