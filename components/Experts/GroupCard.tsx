@@ -1,12 +1,12 @@
 import { baseurl } from "@/utils/app";
 import Menu from "./Menu";
-import { toast } from "react-toastify";
 import backend from "@/utils/app/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, setUserData } from "@/redux/features/UserSlice";
 import { useRouter } from "next/navigation";
 import mixpanel from "mixpanel-browser";
 import supabase from "@/utils/setup/supabase";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function GroupCard({ group, setActiveGroup, index }: any) {
   const date = group.lastUpdated ? new Date(group.lastUpdated).toLocaleDateString() : '';
@@ -77,10 +77,10 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
   
 
   const handleOptionClick = (option: string) => {
-    mixpanel.track(`Explore card option click - ${option}`)
+    mixpanel.track(`Explore card option click - ${option}`);
     if (option === 'copyLink') {
-      if (!group.userId || !group.creatorId) throw "Start a new session to share this group";
-      navigator.clipboard.writeText(`${baseurl}/chat?name=${group.name}&eid=${group.npcId?.npcId}&cid=${group.creatorId}`);
+      if (!group.creatorId) throw toast.error("Start a new session to share this group");
+      navigator.clipboard.writeText(`${baseurl}/chat?name=${group.name}&eid=${group.npcId?.npcId}&cid=${group?.creatorId}`);
       toast.info('Link Copied!')
     } else if (option === 'newSession') {
       handleNewSession();
@@ -99,14 +99,20 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
     <div key={group.groupId} onClick={()=>setActiveGroup(group)} className="shadow flex gap-4 border p-4 rounded-lg hover:shadow-lg cursor-pointer">
         <div className="flex h-12 w-12 relative rounded-full bg-green-100">
           <img src={group.imageUrl} className="h-full w-full object-cover rounded-full" />
-        </div>
+      </div>
         <div className=" w-full">
           <div className="flex justify-between mb-1">
+          <div className="flex gap-4 items-center">
             <h1 className="font-bold">{group.name}</h1>
+            <div onClick={(e) => {
+              e.stopPropagation();
+              handleOptionClick('copyLink');
+            }} className="text-sm font-semibold text-primary hover:text-primary/80">Share</div>
+            </div>
+            
             {/* <p className="text-primary hover:font-semibold">Options</p> */}
           <Menu handleOptionClick={handleOptionClick} />
           </div>
-          
           <div className="flex gap-4 w-full">
             <p className="flex-1 text-gray-500">{group.lastMessage?.substring(0, 70)}...</p>
             <p className="text-gray-500">{date}</p>

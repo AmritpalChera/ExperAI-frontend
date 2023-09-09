@@ -5,12 +5,12 @@ import { selectUser, setUserData } from "@/redux/features/UserSlice";
 import { useRouter } from "next/navigation";
 import NewExpert from "./NewExpert";
 import { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
 import backend from "@/utils/app/axios";
 import Menu from "./Menu";
 import GroupCard from "./GroupCard";
 import UpgradeModal from "../Chat/UpgradeModal";
 import SigninModal from "../SigninModal";
+import { ToastContainer } from "react-toastify";
 
 export default function Experts() {
   const [open, setOpen] = useState(false)
@@ -49,7 +49,6 @@ export default function Experts() {
     <>
       <div>
         <Sidenav />
-        
         <main className="lg:pl-72">
           <div className="xl:pr-96">
             <div className="px-4 py-12  sm:px-6 lg:px-8 flex flex-col justify-center items-center">

@@ -5,7 +5,7 @@ import mixpanel from "mixpanel-browser";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function useSessionProvider() {
   const router = useRouter();

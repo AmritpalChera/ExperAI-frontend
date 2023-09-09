@@ -42,7 +42,7 @@ export default function Menu({handleOptionClick}: any) {
 
   return (
     <Popover className="relative">
-      <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-primary">
+      <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-primary hover:text-primary/80">
         <span>Options</span>
         <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
       </Popover.Button>
