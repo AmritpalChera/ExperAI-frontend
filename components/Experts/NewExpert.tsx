@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import backend from '@/utils/app/axios';
@@ -46,9 +46,20 @@ export default function NewExpert({ setOpen }: any) {
       handleSubmit();
     }
   };
+  const open = !!user.newExpertModal?.open;
+  const innerRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (open && innerRef.current) {
+        innerRef.current.focus();
+      }
+    }, 0);
+
+    return () => clearTimeout(timeout);
+  }, [open]);
 
   return (
-    <Transition.Root show={!!user.newExpertModal?.open} as={Fragment}>
+    <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
         <Transition.Child
           as={Fragment}
@@ -89,13 +100,13 @@ export default function NewExpert({ setOpen }: any) {
                     </Dialog.Title>
                     <div className="mt-4">
                       <div className=' w-full flex justify-center '>
-                        <input  onKeyDown={handleKeyDown} value={expert} onChange={(e) => setExpert(e.target.value)} autoFocus className='bg-white text-black cursor-text rounded-xl py-2 px-2 max-w-4xl w-full border-2 shadow-lg shadow-gray' placeholder={`enter expert profession`}></input>
+                        <input ref={innerRef}  onKeyDown={handleKeyDown} value={expert} onChange={(e) => setExpert(e.target.value)} className='bg-white text-black cursor-text rounded-xl py-2 px-2 max-w-4xl w-full border-2 shadow-lg shadow-gray' placeholder={`enter expert profession...`}></input>
                       </div>
                     </div>
                     <div className='flex gap-4 mt-4 flex-wrap justify-center'>
-                      <button onClick={()=>handleSubmit('world geography expert')} className='border px-4 py-1 rounded-lg bg-gray-100 flex items-center gap-2 text-gray-700'><MagnifyingGlassIcon className='h-4 w-4' />World geograohy expert</button>
-                      <button onClick={()=>handleSubmit('Laozi the teacher of Tao')} className='border px-4 py-1 rounded-lg bg-gray-100 flex items-center gap-2 text-gray-700'> <MagnifyingGlassIcon className='h-4 w-4' />Teacher of Taoism</button>
-                      <button onClick={()=>handleSubmit('Australian girl good at human biology')} className='border px-4 py-1 rounded-lg bg-gray-100 flex items-center gap-2 text-gray-700'> <MagnifyingGlassIcon className='h-4 w-4' />Australian girl good at human biology</button>
+                      <button onClick={()=>handleSubmit('world geography expert')} className='border px-4 shadow hover:shadow-md py-1 rounded-full bg-gray-100 flex items-center gap-2 text-primary'><MagnifyingGlassIcon className='h-4 w-4' />World geograohy expert</button>
+                      <button onClick={()=>handleSubmit('Laozi the teacher of Tao')} className='border px-4 py-1 shadow hover:shadow-md rounded-full bg-gray-100 flex items-center gap-2 text-primary'> <MagnifyingGlassIcon className='h-4 w-4' />Teacher of Taoism</button>
+                      <button onClick={()=>handleSubmit('Australian girl good at human biology')} className='border px-4 py-1 shadow rounded-full hover:shadow-md bg-gray-100 flex items-center gap-2 text-primary'> <MagnifyingGlassIcon className='h-4 w-4' />Australian girl good at human biology</button>
                     </div>
                   </div>
                 </div>

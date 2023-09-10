@@ -8,6 +8,8 @@ import useExpertIntroduce from "@/hooks/useExpertIntroduce";
 import MessageContextMenu from "./MessageContextMenu";
 import UpgradeModal from "./UpgradeModal";
 import mixpanel from "mixpanel-browser";
+import { experaiId } from "@/utils/app";
+import { useRouter } from "next/navigation";
 
 export default function MessageWindow() {
   
@@ -16,7 +18,7 @@ export default function MessageWindow() {
   const [response, setResponse] = useState('');
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
-
+  const router = useRouter();
   const { chatdata } = useSelector(selectUser);
   
   useExpertIntroduce();
@@ -58,6 +60,12 @@ export default function MessageWindow() {
     dispatch(setUserData({contextUploadOpen: true }))
   }
 
+  const handleNewExpert = () => {
+    mixpanel.track('New expert button clicked');
+    dispatch(setUserData({ newExpertModal: { open: true } }));
+    router.push('/experts');
+  }
+
   const bottomRef = useRef<HTMLDivElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
 
@@ -86,9 +94,14 @@ export default function MessageWindow() {
           <div className="flex gap-4">
             {/* <button className="bg-red px-4 py-1 rounded-lg text-white">Clear</button> */}
             {/* <button className="bg-dark px-4 py-0 rounded-lg text-white">New Session</button> */}
-            <div className='hover:text-primary'>
+            {user.activeGroup?.npcId?.npcId !== experaiId ? <div className='hover:text-primary'>
               <span onClick={handleContextClick} className="bg-dark rounded-xl text-white py-1 px-4 cursor-pointer hover:bg-dark/80">Context</span>
             </div>
+            :  <div className='hover:text-primary'>
+                <span onClick={handleNewExpert} className="bg-dark rounded-xl text-white animate-pulse py-1 px-4 cursor-pointer ">New Expert</span>
+              </div>
+          
+            }
           </div>
 
           )}
