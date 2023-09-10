@@ -9,7 +9,7 @@ import supabase from "@/utils/setup/supabase";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function GroupCard({ group, setActiveGroup, index }: any) {
-  const date = group.lastUpdated ? new Date(group.lastUpdated).toLocaleDateString() : '';
+  // const date = group.lastUpdated ? new Date(group.lastUpdated).toLocaleDateString() : '';
   const user = useSelector(selectUser);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -58,24 +58,6 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`, '_blank');
   }
 
-  const handleMakePublic = async () => {
-
-    // add to public_NPC
-    const publicGroupData = await supabase.from('public_NPC').upsert({ npcId: group.npcId?.npcId, creatorId: group.creatorId, groupId: group.groupId });
-    if (publicGroupData.error) throw toast.error('Could not get public npc data');
-    // set group status to public
-    await supabase.from('Group').update({ isPublic: true }).eq('groupId', group.groupId);
-  }
-
-  const handleMakePrivate = async () => {
-    const publicGroupData = await supabase.from('public_NPC').delete().eq('groupId', group.groupId);
-    if (publicGroupData.error) throw toast.error('Could not get public npc data');
-    // set group status to public
-    await supabase.from('Group').update({ isPublic: false }).eq('groupId', group.groupId);
-  }
-  
-  
-
   const handleOptionClick = (option: string) => {
     mixpanel.track(`Explore card option click - ${option}`);
     if (option === 'copyLink') {
@@ -112,10 +94,13 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
             
             {/* <p className="text-primary hover:font-semibold">Options</p> */}
           <Menu handleOptionClick={handleOptionClick} />
-          </div>
+        </div>
+        <div className="flex gap-4 w-full">
+          {group?.npcId?.tags?.map((tag: string) => <div className="px-2 rounded-full text-sm bg-green-200">{tag}</div>)}
+        </div>
           <div className="flex gap-4 w-full">
             <p className="flex-1 text-gray-500">{group.lastMessage?.substring(0, 70)}...</p>
-            <p className="text-gray-500">{date}</p>
+            {/* <p className="text-gray-500">{date}</p> */}
           </div>
         </div>
       </div>
