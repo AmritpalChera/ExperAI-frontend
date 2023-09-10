@@ -35,7 +35,7 @@ export default function NewExpert({ setOpen }: any) {
     const generatedExpert = generatedExpertData?.data;
     mixpanel.track('expert generated');
     if (generatedExpert?.group) {
-      dispatch(setUserData({ activeGroup: generatedExpert.group }));
+      dispatch(setUserData({ activeGroup: generatedExpert.group, newExpertModal: {open: false} }));
       router.push('/chat');
     }
     setLoading(false);    

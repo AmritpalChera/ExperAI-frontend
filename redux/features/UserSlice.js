@@ -11,6 +11,9 @@ const _initialState = {
   upgradeModal: {
     open: false,
     message: ''
+  },
+  newExpertModal: {
+    open: false
   }
 }
 

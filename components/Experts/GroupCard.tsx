@@ -96,7 +96,7 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
           <Menu handleOptionClick={handleOptionClick} />
         </div>
         <div className="flex gap-4 w-full">
-          {group?.npcId?.tags?.map((tag: string) => <div key={tag} className="px-2 rounded-full text-sm bg-green-200">{tag}</div>)}
+          {group?.npcId?.tags?.map((tag: string) => <div key={tag} className="px-2 mb-2 rounded-full text-sm bg-green-200">{tag}</div>)}
         </div>
           <div className="flex gap-4 w-full">
             <p className="flex-1 text-gray-500">{group.lastMessage?.substring(0, 70)}...</p>
