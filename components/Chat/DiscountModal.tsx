@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectUser, setUserData } from '@/redux/features/UserSlice'
@@ -13,11 +13,15 @@ export default function DiscountModal() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const router = useRouter();
-  const [modalUsed, setModalUsed] = useState(!!localStorage.getItem('discountModalUsed'));
-  const [showModal, setShowModal] = useState(!modalUsed && user.chatData?.length > 1 && user.planType === CustomerPlans.LITE);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const everyThree = user.chatdata?.length % 5 === 0;
+    setShowModal(everyThree && user.chatdata?.length > 2 && user.planType === CustomerPlans.LITE)
+  }, [user.chatdata]);
 
   const closeModal = () => {
-    dispatch(setUserData({upgradeModal: {open: false, message: ''}}))
+    setShowModal(false);
   }
 
   const handleUpgradeClick = async () => {
@@ -32,8 +36,6 @@ export default function DiscountModal() {
       }
     });
   }
-
-  console.log('showing modal')
 
   return (
     <Transition.Root show={!!showModal} as={Fragment}>
@@ -72,11 +74,11 @@ export default function DiscountModal() {
                   </div>
                   <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                      
+                      20% off SALE
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        We recently had a wonderful launch of ExperAI 3.0. To celebrate, we&#39;re giving all users 30% off for lifetime on our Novice plan.
+                        User promotion code <span className='text-primary font-bold'>'LaunchSale'</span> to get your discount!
                       </p>
                     </div>
                   </div>

@@ -10,6 +10,7 @@ import UpgradeModal from "./UpgradeModal";
 import mixpanel from "mixpanel-browser";
 import { experaiId } from "@/utils/app";
 import { useRouter } from "next/navigation";
+import DiscountModal from "./DiscountModal";
 
 export default function MessageWindow() {
   
@@ -158,6 +159,7 @@ export default function MessageWindow() {
         </div>
       </div>
       <UpgradeModal />
+      <DiscountModal />
     </div>
   )
 }
