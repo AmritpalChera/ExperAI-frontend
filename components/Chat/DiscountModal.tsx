@@ -78,7 +78,7 @@ export default function DiscountModal() {
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        User promotion code <span className='text-primary font-bold'>'LaunchSale'</span> to get your discount!
+                        User promotion code <span className='text-primary font-bold'>&#39;LaunchSale&#39;</span> to get your discount!
                       </p>
                     </div>
                   </div>
