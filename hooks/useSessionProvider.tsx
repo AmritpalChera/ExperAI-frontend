@@ -1,4 +1,5 @@
 import { selectUser, setUserData } from "@/redux/features/UserSlice";
+import { experaiId } from "@/utils/app";
 import backend from "@/utils/app/axios";
 import supabase from "@/utils/setup/supabase";
 import mixpanel from "mixpanel-browser";
@@ -39,7 +40,7 @@ export default function useSessionProvider() {
       // create new group with experAI
       let newGroupData = await backend.post('/group/unique', {
         userId: user.id,
-        npcId: customExpert || '46d9456d-c2ea-41ed-b436-8afb7131f90b',
+        npcId: customExpert || experaiId,
         creatorId: creatorId
       }).then(res => res.data).catch(err => {
         if (err?.response?.data?.premium) {
@@ -58,7 +59,7 @@ export default function useSessionProvider() {
       if (!newGroup) {
         newGroupData = await backend.post('/group/unique', {
           userId: user.id,
-          npcId: '46d9456d-c2ea-41ed-b436-8afb7131f90b',
+          npcId: experaiId,
           creatorId: user.id
         }).then(res => res.data).catch(err => {
           if (err?.response?.data?.premium) {

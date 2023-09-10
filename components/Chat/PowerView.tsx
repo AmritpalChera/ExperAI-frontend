@@ -4,9 +4,10 @@ import { selectUser, setUserData } from "@/redux/features/UserSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { useState } from "react";
 import Sidebar from "./Sidebar";
-import { baseurl } from "@/utils/app";
+import { baseurl, experaiId } from "@/utils/app";
 import { toast } from "react-toastify";
 import mixpanel from "mixpanel-browser";
+import { useRouter } from "next/navigation";
 
 
 export type WebResults = {
@@ -21,6 +22,7 @@ export type WebResults = {
 export default function PowerView() {
   const [open, setOpen] = useState(false);
   const user = useSelector(selectUser);
+  const router = useRouter();
 
   const dispatch = useDispatch();
 
@@ -36,6 +38,13 @@ export default function PowerView() {
     navigator.clipboard.writeText(`${baseurl}/chat?name=${user.activeGroup?.name}&eid=${user.activeGroup?.npcId?.npcId}&cid=${user.activeGroup.creatorId}`);
     toast.info('Link Copied');
   }
+
+  const handleNewExpert = () => {
+    mixpanel.track('New expert button clicked');
+    dispatch(setUserData({ newExpertModal: { open: true } }));
+    router.push('/experts');
+  }
+
   return (
     <div className="h-full">
       <div className='flex flex-col h-full gap-4 text-gray-500'>
@@ -47,7 +56,8 @@ export default function PowerView() {
         <div className='flex flex-col gap-4'>
           <Sidebar open={open} setOpen={handleUploadOpen} />
           <button onClick={()=>handleUploadOpen(true)} className='py-4 px-6 bg-dark rounded-lg text-white hover:bg-dark/80'>Custom context</button>
-          <button onClick={handleShare} className='py-4 px-6 bg-white border border-gray-300 shadow-md rounded-lg text-black hover:bg-black/5'>Share</button>
+          {user.activeGroup?.npcId?.npcId !== experaiId ? <button onClick={handleShare} className='py-4 px-6 bg-white border border-gray-300 shadow-md rounded-lg text-black hover:bg-black/5'>Share</button>
+            : <button onClick={handleNewExpert} className='py-4 px-6 bg-primary border border-gray-300 shadow-md rounded-lg text-white hover:bg-primary/80'>New Expert</button>}
         </div>      
       </div>
     </div>

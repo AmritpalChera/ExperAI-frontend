@@ -11,12 +11,17 @@ import GroupCard from "./GroupCard";
 import UpgradeModal from "../Chat/UpgradeModal";
 import SigninModal from "../SigninModal";
 import { ToastContainer } from "react-toastify";
+import Image from "next/image";
+import { experaiId } from "@/utils/app";
 
 export default function Experts() {
-  const [open, setOpen] = useState(false)
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const setOpen = (isOpen: boolean) => {
+    dispatch(setUserData({ newExpertModal: { open: isOpen } }));
+  }
 
   const setActiveGroup = (group: any) => {
     dispatch(setUserData({ activeGroup: group }));
@@ -34,13 +39,23 @@ export default function Experts() {
     else dispatch(setUserData({ signinOpen: true }));
   }, []);
 
-
+  
   const groupCardNew = () => {
+    const flashing = user.groups?.length === 0 || (user.groups?.length === 1 && user.groups[0].groupId?.npcId?.npcId === experaiId);
     return (
-      <div onClick={() => setOpen(true)} className="shadow w-full justify-center h-20 items-center flex gap-4 border p-4 text-white bg-dark rounded-lg hover:shadow-lg cursor-pointer">
+      <div onClick={() => setOpen(true)} className="shadow relative w-full justify-center h-20 items-center flex gap-4 border p-4 text-white bg-dark hover:bg-dark/90 rounded-lg hover:shadow-lg cursor-pointer">
         <div>
           <h1 className="text-xl">Create New Expert</h1>
         </div>
+        {flashing && <div className="absolute w-24 right-0 top-4">
+          <Image
+            src="/cursors.png"
+            alt="index-image"
+            height={150}
+            width={150}
+            className="mx-auto max-w-full lg:mr-0 animate-pulse"
+          />
+        </div>}
       </div>
     )
   }
@@ -63,7 +78,7 @@ export default function Experts() {
             </div>
           </div>
         </main>
-        <NewExpert open={open} setOpen={setOpen} />
+        <NewExpert setOpen={setOpen} />
         <UpgradeModal />
         <SigninModal />
         <aside className="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block">

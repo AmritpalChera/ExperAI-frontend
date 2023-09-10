@@ -1,4 +1,4 @@
-import { baseurl } from "@/utils/app";
+import { baseurl, experaiId } from "@/utils/app";
 import Menu from "./Menu";
 import backend from "@/utils/app/axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -94,7 +94,7 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
       toast.info('Prompt Copied!');
     }
   };
-
+  
   return (
     <div key={group.groupId} onClick={()=>setActiveGroup(group)} className="shadow flex gap-4 border p-4 rounded-lg hover:shadow-lg cursor-pointer">
         <div className="flex h-12 w-12 relative rounded-full bg-green-100">
@@ -104,10 +104,10 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
           <div className="flex justify-between mb-1">
           <div className="flex gap-4 items-center">
             <h1 className="font-bold">{group.name}</h1>
-            <div onClick={(e) => {
+            {group.npcId?.npcId !== experaiId && <div onClick={(e) => {
               e.stopPropagation();
               handleOptionClick('copyLink');
-            }} className="text-sm font-semibold text-primary hover:text-primary/80">Share</div>
+            }} className="text-sm font-semibold text-primary hover:text-primary/80">Share</div>}
             </div>
             
             {/* <p className="text-primary hover:font-semibold">Options</p> */}

@@ -21,3 +21,5 @@ export const CustomerPlans = {
 const development = process.env.NODE_ENV === 'development';
 
 export const billManageURL = development ? 'https://billing.stripe.com/p/login/test_6oE7tQ6KPbWj4RW000' : 'https://billing.stripe.com/p/login/9AQ03j7hr8QdgEgaEE';
+
+export const experaiId = '46d9456d-c2ea-41ed-b436-8afb7131f90b';

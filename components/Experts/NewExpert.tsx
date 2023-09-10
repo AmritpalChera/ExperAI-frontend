@@ -10,7 +10,7 @@ import { ThreeDots } from 'react-loader-spinner';
 import { useRouter } from 'next/navigation';
 import mixpanel from 'mixpanel-browser';
 
-export default function NewExpert({ open, setOpen }: any) {
+export default function NewExpert({ setOpen }: any) {
  
   const [expert, setExpert] = useState('');
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,6 @@ export default function NewExpert({ open, setOpen }: any) {
     }).then(res => res.data).catch(err => {
       if (err?.response?.data?.premium) {
         dispatch(setUserData({ upgradeModal: { open: true, message: 'Friends limit reached' } }));
-        setOpen(false);
       }
     });
     const generatedExpert = generatedExpertData?.data;
@@ -49,7 +48,7 @@ export default function NewExpert({ open, setOpen }: any) {
   };
 
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={!!user.newExpertModal?.open} as={Fragment}>
       <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
         <Transition.Child
           as={Fragment}

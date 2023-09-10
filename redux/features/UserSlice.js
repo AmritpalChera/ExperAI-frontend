@@ -1,3 +1,4 @@
+import { experaiId } from '@/utils/app';
 import { createSlice } from '@reduxjs/toolkit';
 
 
@@ -6,7 +7,7 @@ const _initialState = {
   loaded: false,
   chatdata: [{content: "1 second, calling expert...", role: 'assistant'}],
   siginOpen: false,
-  npcId: '46d9456d-c2ea-41ed-b436-8afb7131f90b',
+  npcId: experaiId,
   upgradeModal: {
     open: false,
     message: ''
