@@ -78,7 +78,7 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
   };
   
   return (
-    <div key={group.groupId} onClick={()=>setActiveGroup(group)} className="shadow flex  max-w-3xl overflow-hidden gap-4 border p-4 rounded-lg hover:shadow-lg cursor-pointer">
+    <div key={group.groupId} onClick={()=>setActiveGroup(group)} className="shadow flex  max-w-3xl gap-4 border p-4 rounded-lg hover:shadow-lg cursor-pointer">
         <div className="flex h-12 w-12 relative rounded-full bg-green-100">
           <img src={group.imageUrl} className="h-full w-full object-cover rounded-full" />
       </div>
@@ -95,7 +95,7 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
             {/* <p className="text-primary hover:font-semibold">Options</p> */}
           <Menu handleOptionClick={handleOptionClick} />
         </div>
-        <div className="flex gap-4 w-full">
+        <div className="flex gap-4 w-full max-w-3xl overflow-hidden">
           {group?.npcId?.tags?.map((tag: string) => <div key={tag} className="px-2 mb-2 rounded-full text-sm bg-green-200">{tag}</div>)}
         </div>
           <div className="flex gap-4 w-full">
