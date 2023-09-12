@@ -78,7 +78,7 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
   };
   
   return (
-    <div key={group.groupId} onClick={()=>setActiveGroup(group)} className="shadow flex gap-4 border p-4 rounded-lg hover:shadow-lg cursor-pointer">
+    <div key={group.groupId} onClick={()=>setActiveGroup(group)} className="shadow flex  max-w-3xl overflow-hidden gap-4 border p-4 rounded-lg hover:shadow-lg cursor-pointer">
         <div className="flex h-12 w-12 relative rounded-full bg-green-100">
           <img src={group.imageUrl} className="h-full w-full object-cover rounded-full" />
       </div>
