@@ -1,5 +1,5 @@
 "use client";
-import { baseurl } from "@/utils/app";
+import { baseurl, experaiId } from "@/utils/app";
 import supabase from "@/utils/setup/supabase";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ export default function Explore() {
   const router = useRouter();
 
   const getGroups = async () => {
-    const groupsData = await supabase.from('Group').select('creatorId, imageUrl, name, npcId (npcId, tags, name)').eq('isOriginal', true).limit(30);
+    const groupsData = await supabase.from('Group').select('creatorId, imageUrl, name, npcId (npcId, tags, name)').eq('isOriginal', true).limit(60);
     // console.log('groupsData is: ', groupsData);
     if (groupsData.data) setGroups(groupsData.data);
   };
@@ -25,6 +25,8 @@ export default function Explore() {
     const handleCardClick = () => {
       window.location.href = (`${baseurl}/chat?name=${group.name}&eid=${group?.npcId?.npcId}&cid=${group.creatorId}`);
     }
+
+    if (group?.npcId?.npcId === experaiId) return null;
 
     return (
       <div onClick={handleCardClick} className="flex flex-col md:w-64 rounded-lg border overflow-hidden hover:shadow cursor-pointer" key={index}>
