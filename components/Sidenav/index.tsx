@@ -31,7 +31,8 @@ export default function Sidenav() {
   const navigation = [
     { name: 'Chat', href: '/chat', icon: HomeIcon, current: pathname === '/chat' },
     { name: 'My Experts', href: '/experts', icon: UsersIcon, current: pathname === '/experts' },
-    // { name: 'Explore', href: '/explore', icon: BoltIcon, current: pathname === '/explore' },
+
+    { name: 'Explore', href: '/explore', icon: BoltIcon, current: pathname === '/explore' },
     // { name: 'Integrate', href: '#', icon: CalendarIcon, current: false },
     // { name: 'Guide', href: '#', icon: DocumentDuplicateIcon, current: false },
     // { name: 'Profile', href: '#', icon: ChartPieIcon, current: false },

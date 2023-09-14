@@ -159,7 +159,7 @@ export default function MessageWindow() {
         </div>
       </div>
       <UpgradeModal />
-      <DiscountModal />
+      {/* <DiscountModal /> */}
     </div>
   )
 }
