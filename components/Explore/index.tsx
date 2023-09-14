@@ -11,8 +11,8 @@ export default function Explore() {
   const router = useRouter();
 
   const getGroups = async () => {
-    const groupsData = await supabase.from('Group').select('creatorId, imageUrl, name, npcId (npcId, tags, name)').eq('isOriginal', true);
-    console.log('groupsData is: ', groupsData);
+    const groupsData = await supabase.from('Group').select('creatorId, imageUrl, name, npcId (npcId, tags, name)').eq('isOriginal', true).limit(30);
+    // console.log('groupsData is: ', groupsData);
     if (groupsData.data) setGroups(groupsData.data);
   };
 
