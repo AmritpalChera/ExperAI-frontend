@@ -24,7 +24,7 @@ const SigninPage = () => {
 
   useEffect(() => {
     if (user.email) {
-      router.push('/dashboard')
+      router.push('/experts')
     }
   }, [])
 
@@ -52,7 +52,7 @@ const SigninPage = () => {
     
     setEmail('');
     setPassword('');
-    router.push('/dashboard')
+    router.push('/experts')
   }
 
   if (!user.loaded) {

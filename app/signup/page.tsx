@@ -28,7 +28,7 @@ const SignupPage = () => {
       setEmail('');
       setPassword('');
       dispatch(setUserData({ ...status.data.user }));
-      router.push('/dashboard')
+      router.push('/experts')
     }
     
   }
@@ -38,7 +38,7 @@ const SignupPage = () => {
 
   useEffect(() => {
     if (user.loaded && user.id) {
-      router.push('/dashboard');
+      router.push('/experts');
     }
   }, [user.id])
 

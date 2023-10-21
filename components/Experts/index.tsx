@@ -13,6 +13,7 @@ import SigninModal from "../SigninModal";
 import { ToastContainer } from "react-toastify";
 import Image from "next/image";
 import { experaiId } from "@/utils/app";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function Experts() {
   const user = useSelector(selectUser);
@@ -74,6 +75,7 @@ export default function Experts() {
                 {
                   user.groups?.map((groupData: any, index: number) => <GroupCard key={groupData.groupId.groupId} group={groupData.groupId} index={index} setActiveGroup={setActiveGroup} />)
                 }
+                {user.email && !user.groups && <ThreeDots width="40px" height="24px" color="black"/>}
               </div>
             </div>
           </div>
