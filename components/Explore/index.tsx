@@ -29,7 +29,7 @@ export default function Explore() {
     if (group?.npcId?.npcId === experaiId) return null;
 
     return (
-      <div onClick={handleCardClick} className="flex flex-col md:w-64 rounded-lg border overflow-hidden hover:shadow cursor-pointer" key={index}>
+      <div onClick={handleCardClick} className="flex flex-col bg-gray-100 shadow-md md:w-64 rounded-lg border overflow-hidden hover:shadow cursor-pointer" key={index}>
         <div className="h-54 overflow-hidden object-cover">
           <img src={group.imageUrl} alt={group.name} className="h-48 object-cover"  width={512} height={512}/>
         </div>

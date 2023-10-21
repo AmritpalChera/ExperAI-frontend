@@ -6,12 +6,12 @@ import SigninModal from '../SigninModal';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, setUserData } from '@/redux/features/UserSlice';
-import supabase from '@/utils/setup/supabase';
 import { toast } from 'react-toastify';
 import backend from '@/utils/app/axios';
 import { useSearchParams } from 'next/navigation';
 import mixpanel from 'mixpanel-browser';
-import UpgradeModal from './UpgradeModal';
+import SidebarContext from './Sidebar/SidebarContent';
+import SidebarMobile from './Sidebar';
 
 export default function Chat() {
   const user = useSelector(selectUser);
@@ -58,7 +58,11 @@ export default function Chat() {
       mixpanel.track('opening signin');
       dispatch(setUserData({ signinOpen: true }));
     }
-  }, [user.groups])
+  }, [user.groups]);
+
+  const closeMobileSidebar = () => {
+    dispatch(setUserData({ contextUploadOpen: false }));
+  }
 
   return (
     <>
@@ -73,8 +77,10 @@ export default function Chat() {
           </div>
         </main>
 
-        <aside className="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block">
-          <PowerView />
+        <aside className="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l shadow-lg border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block">
+          {/* <PowerView /> */}
+          <SidebarContext />
+          <SidebarMobile setOpen={closeMobileSidebar} />
         </aside>
         <SigninModal />
       </div>

@@ -6,7 +6,7 @@ import SidebarContext from './SidebarContent'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@/redux/features/UserSlice'
 
-export default function Sidebar({ setOpen }: any) {
+export default function SidebarMobile({ setOpen }: any) {
   const user = useSelector(selectUser);
 
   return (

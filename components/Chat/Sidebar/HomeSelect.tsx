@@ -49,7 +49,7 @@ export default function HomeSelect({ setUploadType, uploadType }: any) {
     const prevUploadData = await supabase.from('exp-contexts').select('name, type, uploadId').eq('npcId', user.npcDetails?.npcId).eq('userId', creatorId || user.id);
     if (prevUploadData.error) {
       toast.error('Could not get context');
-      return console.log('Could not get previous context');
+      return console.log('Could not get previous context', prevUploadData.error);
     }
     let documents = prevUploadData.data;
     documents = documents.map(doc => {
@@ -81,11 +81,11 @@ export default function HomeSelect({ setUploadType, uploadType }: any) {
   } 
 
   useEffect(() => {
-    getPreviousUploads();
-  }, [uploadType]);
+    if (user.npcDetails?.npcId) getPreviousUploads();
+  }, [uploadType, user]);
 
   return (
-    <div>
+    <div className=''>
       <h1 className="text-gray-500 border-b">Add Custom Data</h1>
       <ul role="list" className="mt-6 border-gray-200">
         {items.map((item, itemIdx) => (

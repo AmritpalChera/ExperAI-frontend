@@ -96,7 +96,7 @@ export default function MessageWindow() {
             {/* <button className="bg-red px-4 py-1 rounded-lg text-white">Clear</button> */}
             {/* <button className="bg-dark px-4 py-0 rounded-lg text-white">New Session</button> */}
             {user.activeGroup?.npcId?.npcId !== experaiId ? <div className='hover:text-primary'>
-              <span onClick={handleContextClick} className="bg-dark rounded-xl text-white py-1 px-4 cursor-pointer hover:bg-dark/80">Context</span>
+              <span onClick={handleContextClick} className="bg-dark rounded-xl xl:hidden text-white py-1 px-4 cursor-pointer hover:bg-dark/80">Context</span>
             </div>
             :  <div className='hover:text-primary'>
                 <span onClick={handleNewExpert} className="bg-dark rounded-xl text-white animate-pulse py-1 px-4 cursor-pointer ">New Expert</span>
