@@ -47,7 +47,7 @@ export default function useSessionProvider() {
           toast.error('Friend limit reached');
           dispatch(setUserData({ upgradeModal: { open: true, message: err.response.data.error } }));
         } else {
-          toast.error('Something went wrong')
+          console.log(err.response.data);
         }
         return;
       });
