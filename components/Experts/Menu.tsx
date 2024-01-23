@@ -33,8 +33,8 @@ export default function Menu({handleOptionClick}: any) {
   const solutions = [
     { name: 'New Session', description: 'Start new chat with this expert', href: '#', icon: SquaresPlusIcon, id: 'newSession' },
     { name: 'Share Expert', description: 'Share your trained expert', href: '#', icon: LinkIcon, id: "copyLink" },
-    { name: 'Copy Prompt', description: 'Copy expert details for custom generation', href: '#', icon: BoltIcon, id: "copyPrompt" },
-    { name: 'Tweet', description: 'Share your experience online', href: '#', icon: CursorArrowRaysIcon, id: 'tweet' },
+    // { name: 'Copy Prompt', description: 'Copy expert details for custom generation', href: '#', icon: BoltIcon, id: "copyPrompt" },
+    // { name: 'Tweet', description: 'Share your experience online', href: '#', icon: CursorArrowRaysIcon, id: 'tweet' },
     { name: 'Delete', description: "Delete chat", href: '#', icon: TrashIcon, id:'delete' },
   ];
   const [enabled, setEnabled] = useState(false);

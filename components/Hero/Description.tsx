@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export default function Description() {
   return (
     <div className="relative bg-white">
@@ -29,13 +31,13 @@ export default function Description() {
             </div>
           </div>
         </div>
-        <div className="relative lg:col-span-5 lg:-mr-8 xl:absolute xl:inset-0 xl:left-1/2 xl:mr-0">
+        <motion.div whileInView={{ x: 0 }} initial={{ x: 50 }} transition={{ ease: "easeOut", duration: 2 }} className="relative lg:col-span-5 lg:-mr-8 xl:absolute xl:inset-0 xl:left-1/2 xl:mr-0">
           <img
             className="aspect-[3/2] w-full object-contain lg:absolute lg:inset-0 lg:aspect-auto lg:h-full"
             src="/share.svg"
             alt=""
           />
-        </div>
+        </motion.div>
       </div>
     </div>
   )

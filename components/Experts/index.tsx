@@ -68,7 +68,7 @@ export default function Experts() {
         <main className="lg:pl-72">
           <div className="xl:pr-96">
             <div className="px-4 py-12  sm:px-6 lg:px-8 flex flex-col justify-center items-center">
-              <h1 className="text-4xl font-bold text-primary">My Experts</h1>
+              <h1 className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">Experts</h1>
               <div className="flex flex-wrap justify-center flex-col w-full gap-4 mt-24 max-w-3xl">
                 {groupCardNew()}
                 {user.groups && <div className="text-gray-700">{user.groups.length} Experts</div>}

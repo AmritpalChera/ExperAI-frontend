@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 const stats = [
   { id: 1, name: 'Messages every 24 hours', value: '2,000+' },
   { id: 2, name: 'Visitors', value: '80,000+' },
@@ -7,7 +8,7 @@ const stats = [
 export default function Stats() {
   return (
     <div className="bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <motion.div whileInView={{ y: 0 }} initial={{ y: 50 }}  transition={{ ease: "easeOut", duration: 1 }} className="mx-auto max-w-7xl px-6 lg:px-8">
         <dl className="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
           {stats.map((stat) => (
             <div key={stat.id} className="mx-auto flex max-w-xs flex-col gap-y-4">
@@ -18,7 +19,7 @@ export default function Stats() {
             </div>
           ))}
         </dl>
-      </div>
+      </motion.div>
     </div>
   )
 }

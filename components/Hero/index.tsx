@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 
 export default function Hero() {
 
@@ -44,24 +45,24 @@ export default function Hero() {
           </div>
           <div className="overflow-hidden">
             <div className="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
-              <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
-                <div className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
-                  <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              <div  className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
+                <motion.div animate={{ x: 0 }} initial={{ x: -50 }}  transition={{ ease: "easeOut", duration: 1 }} className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
+                  <div className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                     Share knowledge using chatbots.
-                  </h1>
+                  </div>
                   <p className="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
                     Create digital personalities able to answer questions, express emotions, and synthesize fun experiences.
                   </p>
                   <div className="mt-10 flex items-center gap-x-6">
                     <a
                       href="/experts"
-                      className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="rounded-md bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Get started
                     </a>
                     
                   </div>
-                </div>
+                </motion.div>
                 <div className="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
                   <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
                     <div className="relative">

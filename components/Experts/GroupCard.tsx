@@ -78,7 +78,7 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
   };
   
   return (
-    <div key={group.groupId} onClick={()=>setActiveGroup(group)} className="shadow flex bg-gray-50  max-w-3xl gap-4 border p-4 rounded-lg hover:shadow-lg cursor-pointer">
+    <div key={group.groupId} onClick={()=>setActiveGroup(group)} className="shadow flex bg-gray-50  max-w-3xl gap-4 border p-4 rounded-lg cursor-pointer">
         <div className="flex h-12 w-12 relative rounded-full bg-green-100">
           <img src={group.imageUrl} className="h-full w-full object-cover rounded-full" />
       </div>
@@ -86,22 +86,23 @@ export default function GroupCard({ group, setActiveGroup, index }: any) {
           <div className="flex justify-between mb-1">
           <div className="flex gap-4 items-center">
             <h1 className="font-bold">{group.name}</h1>
-            {/* {group.npcId?.npcId !== experaiId && <div onClick={(e) => {
+            {group.npcId?.npcId !== experaiId && <div onClick={(e) => {
               e.stopPropagation();
               handleOptionClick('copyLink');
-            }} className="text-sm font-semibold text-primary hover:text-primary/80">Share</div>} */}
+            }} className="text-sm font-semibold text-white bg-secondary px-4 rounded-full hover:shadow-lg">Share</div>}
             </div>
             
             {/* <p className="text-primary hover:font-semibold">Options</p> */}
           <Menu handleOptionClick={handleOptionClick} />
         </div>
-        <div className="flex gap-1 w-full max-w-3xl overflow-hidden flex-wrap">
-          {group?.npcId?.tags?.map((tag: string) => <div key={tag} className="px-2 mb-2 rounded-full text-sm text-secondary bg-green-100">{tag}</div>)}
-        </div>
+        
           <div className="flex gap-4 w-full">
             <p className="flex-1 text-gray-500">{group.lastMessage?.substring(0, 70)}...</p>
             {/* <p className="text-gray-500">{date}</p> */}
-          </div>
+        </div>
+        <div className="flex gap-4 w-full max-w-3xl overflow-hidden flex-wrap">
+          {group?.npcId?.tags?.map((tag: string) => <div key={tag} className="mt-4 rounded-full text-sm text-secondary font-bold underline">{tag}</div>)}
+        </div>
         </div>
       </div>
   )
