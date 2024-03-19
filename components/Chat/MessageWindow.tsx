@@ -93,8 +93,6 @@ export default function MessageWindow() {
         {/* {chatdata.length > 5 && !user.id && <button className="bg-red animate-pulse px-4 py-1 rounded-lg text-white">Save Chat</button>} */}
         {user.id && (
           <div className="flex gap-4">
-            {/* <button className="bg-red px-4 py-1 rounded-lg text-white">Clear</button> */}
-            {/* <button className="bg-dark px-4 py-0 rounded-lg text-white">New Session</button> */}
             {user.activeGroup?.npcId?.npcId !== experaiId ? <div className='hover:text-primary'>
               <span onClick={handleContextClick} className="bg-dark rounded-xl xl:hidden text-white py-1 px-4 cursor-pointer hover:bg-dark/80">Context</span>
             </div>
@@ -142,14 +140,14 @@ export default function MessageWindow() {
         </div>
       
       <div>
-        <div className="relative flex-grow ">
+        <div className="relative flex-grow px-4 ">
           {loading && <div className=" w-full animate-pulse px-6">
             <div className="w-full border-red rounded-3xl coolBlueGradient h-2 -mb-1">
             </div>
           </div>}
           <label className="relative">
 
-            <input value={input} onChange={(e) => setInput(e.target.value)} className="bg-white pr-12 text-black cursor-text rounded-3xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray focus-visible:outline-0"
+            <input value={input} onChange={(e) => setInput(e.target.value)} className="bg-white pr-12 text-black cursor-text rounded-3xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray outline-none focus-visible:outline-0"
               onKeyDown={handleKeyDown} autoFocus placeholder="Aa..."/>
       
             <button type="button" onClick={respond} className="absolute right-0 p-3">

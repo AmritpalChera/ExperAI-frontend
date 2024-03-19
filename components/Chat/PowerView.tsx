@@ -50,19 +50,6 @@ export default function PowerView() {
 
   return (
     <div className="h-full">
-      {/* <div className='flex flex-col h-full gap-4 text-gray-500'>
-        <div className='flex flex-col gap-4 flex-1'>
-          <h1 className='text-primary text-center font-bold'>Power View</h1>
-          <p>Pro tip! ADD custom context to your experts by uploading PDFs or audio and ask questions! </p>
-        </div>
-        <div className='flex flex-col gap-4'>
-          <Sidebar open={open} setOpen={handleUploadOpen} />
-          <button onClick={()=>handleUploadOpen(true)} className='py-4 px-6 bg-dark rounded-lg text-white hover:bg-dark/80'>Custom context</button>
-          {user.activeGroup?.npcId?.npcId !== experaiId ? <button onClick={handleShare} className='py-4 px-6 bg-white border border-gray-300 shadow-md rounded-lg text-black hover:bg-black/5'>Share</button>
-            : <button onClick={handleNewExpert} className='py-4 px-6 bg-primary border border-gray-300 shadow-md rounded-lg text-white hover:bg-primary/80'>New Expert</button>}
-        </div>      
-      </div> */}
-      
       <SidebarMobile open={open} setOpen={handleUploadOpen} />
     </div>
   )

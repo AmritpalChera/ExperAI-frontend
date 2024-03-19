@@ -9,7 +9,7 @@ export default function useExpertIntroduce() {
 
   const introduceExpert = async () => {
     const experResponse = await backend.post('/npc/respondlx', {
-      search: 'Introduce yourself in a tone that sounds like your personality',
+      search: 'Introduce yourself in a tone that sounds like your personality. Keep it short and concise. Do not reveal personal details.',
       npcId: user.npcDetails.npcId
     }).then(res => res.data).catch(err => { });
 
