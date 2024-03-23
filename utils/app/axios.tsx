@@ -14,4 +14,13 @@ const backend = axios.create({
     }
 });
 
+export const backendFile = axios.create({
+  baseURL: env === "development" ? "http://localhost:3001/api" : 'https://connect.mindplug.io/api',
+  headers: {
+    "Content-Type": "multipart/form-data",
+    "Authorization": `Bearer ${key}`,
+  }
+});
+
+
  export default backend; 
