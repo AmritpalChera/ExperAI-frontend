@@ -10,10 +10,11 @@ interface FolderCreateProps {
     active: Boolean,
     setActive: any,
     folders: Array<SupabaseFolder>,
-    setFolders: any
+    setFolders: any,
+    parentFolder: string | null
 }
 
-const FolderCreate = ({active, setActive, folders, setFolders}: FolderCreateProps) => {
+const FolderCreate = ({active, setActive, folders, setFolders, parentFolder}: FolderCreateProps) => {
     
     
 
@@ -21,7 +22,7 @@ const FolderCreate = ({active, setActive, folders, setFolders}: FolderCreateProp
 
     const handleCreateFolder = async (name: string) => {
         if (!name) return toast.error('Enter name');
-        const folder = await supabase.from('DocumentFolders').insert({userId: user.id, name }).select().single().then(res => res.data);
+        const folder = await supabase.from('DocumentFolders').insert({userId: user.id, name, parentFolder: parentFolder || null }).select().single().then(res => res.data);
         console.log(folder);
         setFolders([folder, ...folders]);
         setActive(false);

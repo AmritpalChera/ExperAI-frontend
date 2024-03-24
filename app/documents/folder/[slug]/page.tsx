@@ -1,11 +1,16 @@
 import Documents from "@/components/Documents";
 import Sidenav from "@/components/Sidenav";
 
-export default function DocumentsPage() {
+interface DocumentsPageProps {
+  params: { slug: string },
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default function DocumentsPage({params, searchParams}: DocumentsPageProps) {
   return (
     <div>
       <Sidenav />
-      <Documents />
+      <Documents slug={params.slug} name={searchParams.name} />
     </div>
   )
 };

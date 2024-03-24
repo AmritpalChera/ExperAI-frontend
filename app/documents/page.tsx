@@ -5,7 +5,7 @@ export default function DocumentsPage() {
   return (
     <div>
       <Sidenav />
-      <Documents />
+      <Documents slug={""} name="" />
     </div>
   )
 };

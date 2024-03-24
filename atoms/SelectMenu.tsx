@@ -20,7 +20,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function SelectMenuß() {
+export default function SelectMenu() {
   const [selected, setSelected] = useState(people[3])
 
   return (

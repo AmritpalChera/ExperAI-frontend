@@ -13,9 +13,10 @@ interface FileModalProps {
   open: boolean,
   setOpen: any,
   files: Array<SupabaseFile>,
-  setFiles: any
+  setFiles: any,
+  folderId: string | null
 }
-export default function FileModal({open, setOpen, files, setFiles}: FileModalProps) {
+export default function FileModal({open, setOpen, files, setFiles, folderId}: FileModalProps) {
   const [folder, setFolder] = useState({id: 1, name: 'testFolder'});
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -38,6 +39,7 @@ export default function FileModal({open, setOpen, files, setFiles}: FileModalPro
         form.append('file', file);
         form.append('type', 'pdf');
         form.append('name', file.name);
+        form.append('folderId', folderId || "");
         form.append('userId', user.id);
         // const fileParsed = await backend.post('https://experai.ue.r.appspot.com/parse/pdf', form).then((res) => res.data);
         // console.log('parsed file is: ', fileParsed);
