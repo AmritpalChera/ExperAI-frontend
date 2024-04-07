@@ -143,7 +143,7 @@ export default function Documents({slug, name}: DocumentsProps) {
             // Display folders
             folders.map((folder) => {
               return(
-                <div className="w-full max-w-4xl">
+                <div key={folder.id} className="w-full max-w-4xl">
                   <Link href={`/documents/folder/${folder.id}?name=${folder.name}`}>
                     <div className="w-full border rounded-xl md:px-8 px-4 py-4 cursor-pointer  h-24 flex justify-between hover:shadow hover:shadow-blue-100">
                       <div className='flex gap-4 items-center'>
@@ -167,7 +167,7 @@ export default function Documents({slug, name}: DocumentsProps) {
             // Display files
             files.map((file) => {
               return (
-                <div className="w-full max-w-4xl">
+                <div key={file.id} className="w-full max-w-4xl">
                   <div className="w-full border rounded-xl md:px-8 px-4 py-4 cursor-pointer  h-24 flex justify-between hover:shadow hover:shadow-blue-100">
                     <div className="">
                       <p className="font-bold text-gray-800 flex gap-2">

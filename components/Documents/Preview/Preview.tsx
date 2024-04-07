@@ -25,7 +25,7 @@ export default function DocumentPreview({file}: DocumentPreviewProps) {
         {/* <Thumbnail pageNumber={2}  /> */}
         {Array.apply(null, Array(numPages))
             .map((x, i)=>i+1)
-            .map(page => <Thumbnail pageNumber={page} width={300} className='w-[300px]'/>)}
+            .map(page => <Thumbnail key={page} pageNumber={page} width={300} className='w-[300px]'/>)}
       </Document>
     </div>
   );
