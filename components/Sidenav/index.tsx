@@ -32,7 +32,7 @@ export default function Sidenav() {
     { name: 'Chat', href: '/chat', icon: HomeIcon, current: pathname === '/chat' },
     { name: 'Experts', href: '/experts', icon: UsersIcon, current: pathname === '/experts' },
 
-    { name: 'Documents', href: '/documents', icon: BoltIcon, current: pathname === '/documents' },
+    // { name: 'Documents', href: '/documents', icon: BoltIcon, current: pathname === '/documents' },
     // { name: 'Integrate', href: '#', icon: CalendarIcon, current: false },
     // { name: 'Guide', href: '#', icon: DocumentDuplicateIcon, current: false },
     // { name: 'Profile', href: '#', icon: ChartPieIcon, current: false },
