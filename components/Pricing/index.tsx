@@ -34,7 +34,7 @@ export default function Pricing() {
       href: '#',
       priceMonthly: `$${litePlan?.amount || '0'}`,
       description: `${litePlan?.messageLimit || '60'} messages/month premium access`,
-      features: [`Up to ${litePlan?.friendLimit || '5'} experts`, '2 total file uploads', 'Limited chat history', 'Files up to 5 MB'],
+      features: [`Up to ${litePlan?.friendLimit || '5'} experts`, 'Limited chat history', '60 messages per month'],
       mostPopular: false,
       priceId: litePlan?.priceId
     },
@@ -43,13 +43,11 @@ export default function Pricing() {
       id: `${basicPlan?.id || 'basic'}`,
       href: '#',
       priceMonthly: `$${basicPlan?.amount/100 || '10'}`,
-      description: `${basicPlan?.messageLimit || '500'} messages/month`,
+      description: `Unlimited messages/month`,
       features: [
         `Up to ${basicPlan?.friendLimit || '100'} Experts`,
-        '5 file uploads per expert',
-        'Audio upload enabled',
         'No ads + priority access',
-        'Files up to 20 MB'
+        'Unlimited messages'
       ],
       mostPopular: true,
       priceId: basicPlan?.priceId
