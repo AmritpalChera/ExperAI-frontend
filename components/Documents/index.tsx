@@ -209,7 +209,7 @@ export default function Documents({slug, name}: DocumentsProps) {
             <div className="flex flex-col gap-2 justify-center w-full">
               {
                 linkedBuds.map((group, i) => (
-                  <GroupCard group={group} setActiveGroup={setActiveGroup} index={i} />
+                  <GroupCard key={group.groupId} group={group} setActiveGroup={setActiveGroup} index={i} />
                 ))
               }
             </div>
