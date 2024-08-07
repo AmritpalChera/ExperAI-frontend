@@ -2,13 +2,16 @@ import { selectUser, setUserData } from '@/redux/features/UserSlice';
 import { CustomerPlans } from '@/utils/app';
 import mindplug from '@/utils/setup/mindplug';
 import supabase from '@/utils/setup/supabase';
-import { ChevronRightIcon } from '@heroicons/react/20/solid'
-import { Bars3Icon, CalendarIcon, DocumentTextIcon, ShieldExclamationIcon, SpeakerWaveIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { ChevronRightIcon, FolderIcon } from '@heroicons/react/20/solid'
+import { ArchiveBoxArrowDownIcon, Bars3Icon, CalendarIcon, DocumentTextIcon, ShieldExclamationIcon, SpeakerWaveIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { createHash } from 'crypto';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import LinkModal from './AddLink';
+import { SupabaseFolder } from '@/components/Documents';
+import { useRouter } from 'next/navigation';
 
 const items = [
   {
@@ -35,13 +38,17 @@ function classNames(...classes: any) {
 export default function HomeSelect({ setUploadType, uploadType }: any) {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  const [folders, setFolders] = useState<any>([]);
+
   const handlePreselect = (itemId: string) => {
     if (!user.id) return dispatch(setUserData({ signinOpen: true }));
     const creatorId = user.activeGroup?.creatorId || user.id;
     if (creatorId !== user.id) throw toast.error('Not allowed for 3rd party groups');
     else setUploadType(itemId)
   };
-  const [uploadedTypes, setUploadedTypes] = useState<any>([]);
+  const [uploadedTypes, setUploadedTypes] = useState<Array<SupabaseFolder>>([]);
 
 
   const getPreviousUploads = async () => {
@@ -63,7 +70,7 @@ export default function HomeSelect({ setUploadType, uploadType }: any) {
       }
     });
 
-    setUploadedTypes(documents);
+    setUploadedTypes(documents as any);
   }
 
   const handleDeleteUpload = async (uploadId: string) => {
@@ -80,74 +87,69 @@ export default function HomeSelect({ setUploadType, uploadType }: any) {
     
   } 
 
+  const getLinkedFolders = async () => {
+    const groupId = user.activeGroup?.groupId;
+    const foldersData = await supabase.from('FolderBudLinks').select('folderId (name, id, created_at, parentFolder (name))').eq('groupId', groupId);
+    if (foldersData.data) {
+      const folders = foldersData.data.map((folder) => folder.folderId);
+      setFolders(folders);
+    }
+  }
+
+  const unlinkFolder = async (selectedFolder: SupabaseFolder) => {
+    const groupId = user.activeGroup?.groupId;
+    const unlinked = await supabase.from('FolderBudLinks').delete().eq('groupId', groupId).eq("folderId", selectedFolder.id).select().single();
+
+    
+    console.log(unlinked);
+    if (unlinked.data){
+      const newFolders = folders.filter((folder: SupabaseFolder) => folder.id !== selectedFolder.id);
+      setFolders([...newFolders]);
+      return toast.success("unlinked");}
+    else return toast.error("Error");
+  }
+
+  const handleFolderClick = async (folder: SupabaseFolder) => {
+    router.push(`/documents/folder/${folder.id}?name=${folder.name}`);
+  }
+
   useEffect(() => {
-    if (user.npcDetails?.npcId) getPreviousUploads();
+    
+    if (user.npcDetails?.npcId) {
+      getLinkedFolders();
+      // getPreviousUploads();
+    }
   }, [uploadType, user]);
 
   return (
     <div className=''>
-      <h1 className="text-gray-500 border-b">Add Custom Data</h1>
-      <ul role="list" className="mt-6 border-gray-200">
-        {items.map((item, itemIdx) => (
-          <li key={itemIdx}>
-            <div className="group relative flex items-start space-x-3 py-4">
-              <div className="flex-shrink-0">
-                <span
-                  className={classNames(item.iconColor, 'inline-flex h-10 w-10 items-center justify-center rounded-lg')}
-                >
-                  <item.icon className="h-6 w-6 text-white" aria-hidden="true" />
-                </span>
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="text-sm font-medium">
-                  <div onClick={() => handlePreselect(item.id)}>
-                    <span className="absolute inset-0 cursor-pointer" aria-hidden="true" />
-                    {item.name}
-                  </div>
-                </div>
-                <p className="text-sm text-gray-500">{item.description}</p>
-              </div>
-              <div className="flex-shrink-0 self-center">
-                <ChevronRightIcon className="h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-6 justify-end flex">
-        <Link href="https://mindplug.io" target='blank' className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-          Build your own
-          <span aria-hidden="true"> &rarr;</span>
-        </Link>
+      <div className='border-b flex justify-between pb-2 mb-4'>
+        <h1 className="text-gray-500">Link Folders</h1>
+        <button onClick={()=>setUploadType('addLink')} className='bg-blue-500 px-4 rounded-lg text-white'>Add link</button>
       </div>
-      <h1 className="text-gray-500 border-b mt-12">Previously Uploaded</h1>
-      <ul role="list" className="mt-6 border-gray-200">
-        {uploadedTypes.map((item: any, itemIdx: any) => (
-          <li key={itemIdx}>
-            <div className="group relative flex items-start space-x-3 py-4">
-              <div className="flex-shrink-0">
-                <span
-                  className={classNames(item.iconColor, 'inline-flex h-10 w-10 items-center justify-center rounded-lg')}
-                >
-                  <item.icon className="h-6 w-6 text-white" aria-hidden="true" />
-                </span>
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="text-sm font-medium">
-                  <div onClick={() => handleDeleteUpload(item.uploadId)}>
-                    <span className="absolute inset-0 cursor-pointer" aria-hidden="true" />
-                    {item.name}
-                  </div>
-                </div>
-                <p className="text-sm text-gray-500">{item.type}</p>
-              </div>
-              <div className="flex-shrink-0 self-center">
-                <TrashIcon className="h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-              </div>
+      {
+          folders.length == 0 && (
+            <div className='w-full flex flex-col mt-8 justify-center items-center text-gray-500'>
+              <ArchiveBoxArrowDownIcon  className='h-8 w-8'/>
+              <p>No folders added</p>
             </div>
-          </li>
-        ))}
-      </ul>
+          )
+      }
+      {
+        folders.length > 0 && folders.map((folder: SupabaseFolder) => (
+          <div key={folder.id} className='flex gap-2 items-center pt-2 justify-between'>
+            <div className='flex items-center gap-2'>
+              <FolderIcon className='h-4 w-4 text-blue-300'/>
+              <button onClick={(e) => handleFolderClick(folder)} className='text-blue-500'>{folder.name}</button>
+            </div>
+            <div>
+              <button onClick={(e)=>unlinkFolder(folder)} className='text-red'>Unlink</button>
+              
+            </div>
+            
+          </div>
+        ))
+      }
     </div>
   )
 }

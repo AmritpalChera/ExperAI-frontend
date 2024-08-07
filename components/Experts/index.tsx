@@ -14,6 +14,7 @@ import { ToastContainer } from "react-toastify";
 import Image from "next/image";
 import { experaiId } from "@/utils/app";
 import { ThreeDots } from "react-loader-spinner";
+import Link from "next/link";
 
 export default function Experts() {
   const user = useSelector(selectUser);
@@ -40,26 +41,6 @@ export default function Experts() {
     else dispatch(setUserData({ signinOpen: true }));
   }, []);
 
-  
-  const groupCardNew = () => {
-    const flashing = user.groups?.length === 0 || (user.groups?.length === 1 && user.groups[0].groupId?.npcId?.npcId === experaiId);
-    return (
-      <div onClick={() => setOpen(true)} className="shadow relative w-full justify-center h-20 items-center flex gap-4 border p-4 text-white bg-dark hover:bg-dark/90 rounded-lg hover:shadow-lg cursor-pointer">
-        <div>
-          <h1 className="text-xl">Create New Expert</h1>
-        </div>
-        {flashing && <div className="absolute w-24 right-0 top-4">
-          <Image
-            src="/cursors.png"
-            alt="index-image"
-            height={150}
-            width={150}
-            className="mx-auto max-w-full lg:mr-0 animate-pulse"
-          />
-        </div>}
-      </div>
-    )
-  }
 
   return (
     <>
@@ -70,8 +51,12 @@ export default function Experts() {
             <div className="px-4 py-12  sm:px-6 lg:px-8 flex flex-col justify-center items-center">
               <h1 className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">Experts</h1>
               <div className="flex flex-wrap justify-center flex-col w-full gap-4 mt-24 max-w-3xl">
-                {groupCardNew()}
-                {user.groups && <div className="text-gray-700">{user.groups.length} Experts</div>}
+                {/* {groupCardNew()} */}
+                <div className="flex w-full justify-between items-baseline border-b-2 pb-2 border-blue-300">
+                  <div className="text-blue-500 text-lg">{user.groups?.length || "..."} Experts</div>
+                  <button onClick={() => setOpen(true)} className="bg-primary rounded-lg px-8 py-1 text-white">Create new</button>
+                </div>
+                
                 {
                   user.groups?.map((groupData: any, index: number) => <GroupCard key={groupData.groupId.groupId} group={groupData.groupId} index={index} setActiveGroup={setActiveGroup} />)
                 }
@@ -85,7 +70,15 @@ export default function Experts() {
         <SigninModal />
         <aside className="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block">
           <h1 className="font-bold text-primary text-center mb-8">Announcements</h1>
-            New improvements soon
+          <div className='flex flex-col px-4 gap-4'>
+            <Image src="/lilybw.jpg" width={500} height={500} alt="lily image" />
+            <h2 className='text-center text-neutral-600 font-medium text-lg'>Introducing Coach Lily</h2>
+            <p className='text-neutral-600 text-center'>An AI Life Coach - who grows alongside you on your journey</p>
+            <div className='flex justify-center w-full mt-8'>
+              <Link href={'https://coachlily.com'} className='bg-black text-center w-full px-12 py-3 text-white rounded-xl'>Start Chat</Link>
+            </div>
+          </div>
+
           <br /><br />
           <p className="hidden">If the experiment is successful, you will soon see experts which are monetized and allows our users to generate income.</p>
          

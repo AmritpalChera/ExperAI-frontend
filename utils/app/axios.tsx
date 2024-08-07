@@ -4,7 +4,7 @@ import axios from 'axios';
 const key = process.env.NEXT_PUBLIC_BACKEND_KEY;
 
 const env = process.env.NODE_ENV;
-
+export const BASE_FRONTEND_URL = env==="development" ? "http://localhost:3000" : 'https://experai.com';
 
 const backend = axios.create({
     baseURL: env==="development" ? "http://localhost:3001/api" : 'https://backend.experai.com/api',

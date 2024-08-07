@@ -6,7 +6,7 @@ import FolderSelect from './FolderSelect'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@/redux/features/UserSlice'
-import { backendFile } from '@/utils/app/axios'
+import backend, { backendFile } from '@/utils/app/axios'
 import { SupabaseFile } from '..'
 
 interface FileModalProps {
@@ -111,10 +111,10 @@ export default function FileModal({open, setOpen, files, setFiles, folderId}: Fi
                     </div>
                   </div>
                 </div>
-                <div className='flex items-center justify-between mt-8'>
-                    {/* <p>Select folder:</p> */}
+                {/* <div className='flex items-center justify-between mt-8'>
+                    <p>Select folder:</p>
                     <FolderSelect folder={folder} setFolder={setFolder} />
-                </div>
+                </div> */}
                 <div className="mt-12 sm:mt-12 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                   <button
                     type="button"

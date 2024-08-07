@@ -40,31 +40,39 @@ export default function DeleteModal({currFolderId, open, setOpen, folders, setFo
     }
 
     // for each subfolder, delete the files and then delete the subfolder
-    await Promise.all(subFolders.map(async (folderId) => {
+    await Promise.all(subFolders.map(async (folderId: string) => {
         // get and delete all files from supabase
         const files = await supabase.from('Documents').delete().eq('folderId', folderId).select('id').then(res => res.data);
         if (files && files.length && files?.length > 0) {
             // if files exist
-            await Promise.all(files.map(async (file) => {
+            await Promise.all(files.map((file) => {
                 // delete all files from GCP
-                return backend.post('/documents/delete', {fileName: `${file.id}.pdf`, fileId: file.id}).then(res => res.data);
+                return backend.post('/documents/delete', {fileName: `${file.id}.pdf`, fileId: file.id, folderId}).then(res => res.data);
             }));
         }
+        // delete all links with the folder
+        await supabase.from("FolderBudLinks").delete().eq('folderId', folderId);
+        // delete the folder
         await supabase.from('DocumentFolders').delete().eq('id', folderId).then(res => res.data);
     }));
 
-    // delete the curr folder
-    let baseFiles = await supabase.from('Documents').delete().eq('folderId', currFolderId).select('id').then(res => res.data);
+    // get files of the curr folder
+    let baseFiles = await supabase.from('Documents').select('id').eq('folderId', currFolderId).then(res => res.data);
     // delete the base files from current folder
     if (baseFiles && baseFiles.length && baseFiles?.length > 0) {
         // if baseFiles exist
-        await Promise.all(baseFiles.map(async (file) => {
+        await Promise.all(baseFiles.map((file) => {
             // delete all files from GCP
-            return backend.post('/documents/delete', {fileName: `${file.id}.pdf`, fileId: file.id}).then(res => res.data);
+            return backend.post('/documents/delete', {fileName: `${file.id}.pdf`, fileId: file.id, folderId: currFolderId }).then(res => res.data);
         }));
     }
+
+
+    // delete all links of current folder
+    await supabase.from("FolderBudLinks").delete().eq('folderId', currFolderId);
     // delete current folder
-    await supabase.from('DocumentFolders').delete().eq('id', currFolderId).then(res => res.data);
+    const deletedFolder = await supabase.from('DocumentFolders').delete().eq('id', currFolderId).then(res => res.data);
+    console.log('deleted folder: ', deletedFolder);
 
     let newFolders = folders.filter(folder => folder.id !== currFolderId);
     setFolders([...newFolders]);

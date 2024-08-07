@@ -47,9 +47,9 @@ function FileUpload({file, setFile}: FileUploadInterface) {
         onClick={() => fileInputRef.current?.click()}
         className={isDragging ? 'drag-over' : ''}
       >
-        <div className='border px-8 h-40 flex flex-col items-center justify-center text-blue-600 rounded-xl cursor-pointer hover:border-blue-200'>
+        <div className='border px-8 h-40 flex bg-gray-100 flex-col items-center justify-center text-blue-600 rounded-xl cursor-pointer hover:border-blue-200'>
             <div className='flex items-center text-black gap-4'>
-                <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full ${file? 'bg-green-300' : 'bg-red'}`}>
+                <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full ${file? 'bg-green-300' : 'bg-primary'}`}>
                     <DocumentArrowUpIcon className="h-6 w-6 text-white" aria-hidden="true" />
                     
                 </div>
@@ -61,7 +61,7 @@ function FileUpload({file, setFile}: FileUploadInterface) {
                 <p>Drag files here or click to select </p> 
                 )
                 }
-                <p className='mt-2'>Up to 20 MB or 20 pages</p>
+                <p className='mt-2'>Up to 20 MB</p>
             </div>
             }
             
@@ -70,6 +70,7 @@ function FileUpload({file, setFile}: FileUploadInterface) {
         <input
           type="file"
           id="fileInput"
+          accept="application/pdf"
           ref={fileInputRef}
           style={{ display: 'none' }}
           onChange={handleFileInputChange}

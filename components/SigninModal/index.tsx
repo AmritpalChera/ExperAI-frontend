@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, setUserData } from '@/redux/features/UserSlice';
 import supabase from '@/utils/setup/supabase';
 import mixpanel from 'mixpanel-browser';
+import { BASE_FRONTEND_URL } from '@/utils/app/axios';
 
 export default function SigninModal() {
   const [open, setOpen] = useState(false);
@@ -26,6 +27,9 @@ export default function SigninModal() {
   async function signInWithGoogle() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
+      options: {
+        redirectTo: `${BASE_FRONTEND_URL}/experts`
+      }
     });
     mixpanel.track('signin');
   };

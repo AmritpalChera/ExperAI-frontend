@@ -1,5 +1,4 @@
 import backend from "@/utils/app/axios";
-import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -11,12 +10,11 @@ import mixpanel from "mixpanel-browser";
 import { experaiId } from "@/utils/app";
 import { useRouter } from "next/navigation";
 import DiscountModal from "./DiscountModal";
+import { PaperAirplaneIcon } from "@heroicons/react/20/solid";
 
 export default function MessageWindow() {
-  
   const user = useSelector(selectUser);
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState('');
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
   const router = useRouter();
@@ -94,7 +92,7 @@ export default function MessageWindow() {
         {user.id && (
           <div className="flex gap-4">
             {user.activeGroup?.npcId?.npcId !== experaiId ? <div className='hover:text-primary'>
-              <span onClick={handleContextClick} className="bg-dark rounded-xl xl:hidden text-white py-1 px-4 cursor-pointer hover:bg-dark/80">Context</span>
+              {/* <span onClick={handleContextClick} className="bg-dark rounded-xl xl:hidden text-white py-1 px-4 cursor-pointer hover:bg-dark/80">Context</span> */}
             </div>
             :  <div className='hover:text-primary'>
                 <span onClick={handleNewExpert} className="bg-dark rounded-xl text-white animate-pulse py-1 px-4 cursor-pointer ">New Expert</span>
@@ -140,14 +138,14 @@ export default function MessageWindow() {
         </div>
       
       <div>
-        <div className="relative flex-grow px-4 ">
+        <div className="relative flex-grow ">
           {loading && <div className=" w-full animate-pulse px-6">
             <div className="w-full border-red rounded-3xl coolBlueGradient h-2 -mb-1">
             </div>
           </div>}
           <label className="relative">
 
-            <input value={input} onChange={(e) => setInput(e.target.value)} className="bg-white pr-12 text-black cursor-text rounded-3xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray outline-none focus-visible:outline-0"
+            <input value={input} onChange={(e) => setInput(e.target.value)} className="bg-white pr-12 text-black cursor-text rounded-xl py-3 px-4 max-w-4xl w-full border-2 shadow-lg shadow-gray outline-none focus-visible:outline-0"
               onKeyDown={handleKeyDown} autoFocus placeholder="Aa..."/>
       
             <button type="button" onClick={respond} className="absolute right-0 p-3">

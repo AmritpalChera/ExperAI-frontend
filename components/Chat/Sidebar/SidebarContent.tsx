@@ -12,6 +12,8 @@ import { selectUser, setUserData } from '@/redux/features/UserSlice';
 import { CustomerPlans } from '@/utils/app';
 import supabase from '@/utils/setup/supabase';
 import { toast } from 'react-toastify';
+import AddLink from './AddLink';
+import Image from 'next/image';
 
 const items = [
   {
@@ -90,12 +92,20 @@ export default function SidebarContext() {
     else if (uploadType === 'pdf') return <UploadPdf setUploadType={setUploadType} limitHandler={limitHandler} />
     else if (uploadType === 'text') return <UploadText setUploadType={setUploadType} limitHandler={limitHandler} />
     else if (uploadType === 'audio') return <UploadAudio setUploadType={setUploadType} limitHandler={limitHandler} />
+    else if (uploadType === 'addLink') return <AddLink setUploadType={setUploadType} />
     else return <HomeSelect setUploadType={setUploadType} uploadType={uploadType} />
   }
 
   return (
     <div>
-      {getRender()}
+      <div className='flex flex-col px-4 gap-4'>
+          <Image src="/lilybw.jpg" width={500} height={500} alt="lily image" />
+          <h2 className='text-center text-neutral-600 font-medium text-lg'>Introducing Coach Lily</h2>
+          <p className='text-neutral-600 text-center'>An AI Life Coach - who grows alongside you on your journey</p>
+          <div className='flex justify-center w-full mt-8'>
+            <Link href={'https://coachlily.com'} className='bg-black text-center w-full px-12 py-3 text-white rounded-xl'>Start Chat</Link>
+          </div>
+      </div>
     </div>
   )
 }

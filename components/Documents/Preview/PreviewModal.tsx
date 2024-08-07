@@ -12,13 +12,14 @@ interface PreviewModalProps {
     setOpen: any,
     fileId: string,
     files: Array<SupabaseFile>,
-    setFiles: any
+    setFiles: any,
+    folderId: string
 }
 
-export default function PreviewModal({file, open, setOpen, fileId, files, setFiles}: PreviewModalProps) {
+export default function PreviewModal({file, open, setOpen, fileId, files, setFiles, folderId}: PreviewModalProps) {
 
     const deleteFile = async () => {
-        const deleted = await backend.post('/documents/delete', {fileName: `${fileId}.pdf`, fileId});
+        const deleted = await backend.post('/documents/delete', {fileName: `${fileId}.pdf`, fileId, folderId });
         console.log(deleted);
         // filter through the existing files locally
         const filtered = files.filter(file => file.id !== fileId);
