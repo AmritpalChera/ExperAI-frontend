@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import store from "@/redux/store";
 import mixpanel from 'mixpanel-browser';
 import Startup from "./startup";
+import Script from "next/script";
 
 
 // Replace YOUR_TOKEN with your Project Token
@@ -21,6 +22,7 @@ export function Providers({ children }: ProviderProps) {
     <SessionContextProvider supabaseClient={supabaseClient}>
       <Provider store={store}>
         <Startup>
+        <Script src="https://analytics.ahrefs.com/analytics.js" data-key="oKIE4TZiBuLon3JqkxsYxg" async></Script>
           {children}
        </Startup>
       </Provider>
